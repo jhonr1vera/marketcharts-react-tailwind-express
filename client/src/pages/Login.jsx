@@ -13,6 +13,24 @@ export default function Login() {
           });
     }
 
+    const Success = () => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "center",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.onmouseenter = Swal.stopTimer;
+              toast.onmouseleave = Swal.resumeTimer;
+            }
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Has ingresado exitosamente!"
+          });
+    }
+
     const navigate = useNavigate();
     
     const [visible, setVisible] = useState(false);
@@ -39,22 +57,10 @@ export default function Login() {
                 return response.json();
             })
             .then((data) => {
+                localStorage.setItem('token', data.token);
                 navigate('/');
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "center",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.onmouseenter = Swal.stopTimer;
-                      toast.onmouseleave = Swal.resumeTimer;
-                    }
-                  });
-                  Toast.fire({
-                    icon: "success",
-                    title: "Has ingresado exitosamente!"
-                  });
+                Success();
+                
             })
             .catch((err) => console.log(err));
     };
@@ -86,6 +92,7 @@ export default function Login() {
                             placeholder='Ingresa tu nombre de usuario'
                             required
                             className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-500 w-[320px]"
+                            autoFocus
                         />
                     </div>
 
