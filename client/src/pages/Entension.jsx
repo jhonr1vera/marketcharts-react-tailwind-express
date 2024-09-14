@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import {Container, Content, Breadcrumb, Header} from 'rsuite'
 import NavHeader from '../components/NavHeader'
+import Footer from '../components/Footer'
 
 
 export default function Entension() {
 
     const [extensionData, setExtensionData] = useState([])
+    const [totalExtension, setTotalExtension] = useState(0);
 
     useEffect(()=>{
         fetch('http://localhost:5000/api/extension')
@@ -16,6 +18,15 @@ export default function Entension() {
             .catch(err => console.log(err))
         },[])
 
+    useEffect(() => {
+        fetch('http://localhost:5000/api/extension?count=true')
+            .then(res => res.json())
+            .then(data => {
+                setTotalExtension(data.total)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
   return (
     <Container className='flex flex-1 overflow-auto flex-col'>
         
@@ -23,7 +34,7 @@ export default function Entension() {
             <NavHeader/>
         </Header>
 
-        <Content className='mt-[55px] bg-slate-200 h-screen'>
+        <Content className=' bg-slate-200 h-screen'>
         <div className='my-3 mx-4'>
                     <Breadcrumb>
                         <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
@@ -33,8 +44,8 @@ export default function Entension() {
 
                         <div className='justify-between flex mx-[1.3rem]'>
                             <div className='grid'>
-                                <h1 className='text-2xl tracking-wide text-slate-700 mt-8'>Estudiantes de Extension</h1>
-                                <h3 className='text-lg mt-2 text-slate-700'># en  total</h3>
+                                <h1 className='text-2xl tracking-wide text-slate-700 mt-5'>Estudiantes de Extension</h1>
+                                <h3 className='text-lg mt-2 text-slate-700'>{totalExtension} en  total</h3>
                             </div>
 
                         </div>
@@ -43,7 +54,7 @@ export default function Entension() {
                             <table className="min-w-full divide-y divide-gray-200 mt-10">
                                 <thead className="bg-gray-50 dark:bg-slate-400">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cedúla</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellido</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Nacido</th>
@@ -78,6 +89,7 @@ export default function Entension() {
 
                 </div>
         </Content>
+        <Footer></Footer>
     </Container>
   )
 }

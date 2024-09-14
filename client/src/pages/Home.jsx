@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <Container>
       <Header>
-        <NavHeader></NavHeader>
+        <NavHeader aditionalClass={'fixed'}></NavHeader>
       </Header>
       <Content className='bg-slate-200 h-screen dark:bg-Dark-Desaturated-Blue'>
         <div  className='mt-16 mx-4 inline-flex'>

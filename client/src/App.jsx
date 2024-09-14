@@ -1,6 +1,7 @@
 import React from 'react';
 import 'rsuite/dist/rsuite.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { PrivateRoute } from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import NuevoIngreso from './pages/NuevoIngreso';
@@ -15,8 +16,8 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Home />} />
                 <Route path="/nuevoingreso" element={<NuevoIngreso />} />
                 <Route path="/reincorporados" element={<Reincorporados />} />
                 <Route path="/regulares" element={<Regulares/>} />

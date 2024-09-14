@@ -22,7 +22,7 @@ export default {
       },
       screens: {
         'desktop': '900px',
-        'tablet': '450px',
+        'tablet': { 'min': '450px', 'max': '900px'},
         'mobile': { 'min':'0px', 'max': '449px'}
       },
     },

@@ -7,7 +7,7 @@ import Sun from '../assets/sun.svg';
 import Moon from '../assets/moon.svg';
 import NavItem from 'rsuite/esm/Nav/NavItem';
 
-function NavHeader() {
+function NavHeader({aditionalClass}) {
 
     const [darkMode, setDarkMode] = useState(false);
 
@@ -25,19 +25,20 @@ function NavHeader() {
 
 
   return (
-    <div className='fixed' >
+    <div className={aditionalClass} >
 
         <Navbar className='dark:bg-Very-Dark-Blue-Top w-screen'>
                 <Navbar.Brand href="/" className='  text-2xl flex items-center tracking-wide dark:text-slate-400 mobile:ml-2 mobile:text-xl'>
                     MarketCharts
                 </Navbar.Brand>
                 <Nav className=' items-center flex mr-4' pullRight>
-                    <NavItem icon = { <DashboardIcon/>}
-                    className='dark:text-slate-400 text-base hover:h-[55px] hover:rounded-none'
-                    href='/'
-                    >
-                      Dashboard
-                    </NavItem>
+                  
+
+                    <button type='button'className=''>
+                      <Nav.Item href='/' icon={<DashboardIcon/>} className=' dark:hover:bg-slate-600'>
+                          Dashboard
+                      </Nav.Item>
+                    </button>
 
                     <Nav.Menu 
                     title="Tablas"
@@ -60,7 +61,7 @@ function NavHeader() {
                     <Nav.Menu  
                     as='button' 
                     className='gap-4  dark:hover:bg-slate-600 dark:hover:text-white mobile:text-base  dark:text-slate-400 dark:bg-Very-Dark-Blue' 
-                    title = 'User' icon={<Avatar src="https://i.pravatar.cc/150?u=1" circle></Avatar>}>
+                    title = 'Usuario' icon={<Avatar src="https://i.pravatar.cc/150?u=1" circle></Avatar>}>
                     
                     <a href='/login'>
                       <Nav.Item icon={<ExitIcon/>}
@@ -73,6 +74,7 @@ function NavHeader() {
                 </Nav>
 
         </Navbar>
+
     </div> 
   )
 }

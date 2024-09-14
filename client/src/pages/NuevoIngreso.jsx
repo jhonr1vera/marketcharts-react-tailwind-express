@@ -5,6 +5,7 @@ import NavHeader from '../components/NavHeader';
 export default function NuevoIngreso() {
 
     const [nuevoingreso, setNuevoIngreso] = useState([]);
+    const [totalNuevoIngreso, setTotalNuevoIngreso] = useState(0);
 
     useEffect(() => {
       fetch('http://localhost:5000/api/nuevoingreso')
@@ -15,6 +16,13 @@ export default function NuevoIngreso() {
         .catch(error => console.error('Error fetching data:', error));
     }, []);
 
+    useEffect(() => {
+      fetch('http://localhost:5000/api/nuevoingreso?count=true')
+      .then(res => res.json())
+            .then(data => setTotalNuevoIngreso(data.total))
+            .catch(err => console.log(err))
+    })
+
 
   return (
     <Container className='flex flex-1 overflow-auto flex-col'>
@@ -23,7 +31,7 @@ export default function NuevoIngreso() {
             <NavHeader/>
           </Header>
         
-          <Container className='mt-[55px]'>
+          <Container className=''>
             <div className='flex'>
               <Content className='bg-slate-200 h-screen'>
                 <div className='my-3 mx-4'>
@@ -35,8 +43,8 @@ export default function NuevoIngreso() {
 
                         <div className='justify-between flex mx-[1.3rem]'>
                             <div className='grid'>
-                                <h1 className='text-2xl tracking-wide text-slate-700 mt-8'>Estudiantes Nuevo Ingreso</h1>
-                                <h3 className='text-lg mt-2 text-slate-700'># en  total</h3>
+                                <h1 className='text-2xl tracking-wide text-slate-700 mt-5'>Estudiantes Nuevo Ingreso</h1>
+                                <h3 className='text-lg mt-2 text-slate-700'>{totalNuevoIngreso} en  total</h3>
                             </div>
 
                         </div>
@@ -45,7 +53,7 @@ export default function NuevoIngreso() {
                             <table className="min-w-full divide-y divide-gray-200 mt-10">
                                 <thead className="bg-gray-50 dark:bg-slate-400">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cedúla</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apellido</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Nacido</th>
