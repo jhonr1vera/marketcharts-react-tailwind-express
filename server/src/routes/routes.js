@@ -3,6 +3,7 @@ const router = Router();
 const bcrypt = require('bcrypt')
 const jwt = require("jsonwebtoken")
 const { connection, connectToDatabase } = require('../../config/dbconfig');
+const verifyToken = require('../middlewares/VerifyToken.jsx');
 
 connectToDatabase()
 
@@ -28,7 +29,10 @@ router.post('/login', async (req, res) => {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
-            res.json({ id_usuario: user.id_usuario, nombre_usuario: user.nombre_usuario });
+            const token = jwt.sign({username: user.nombre_usuario}, "secretKey", {expiresIn: "1h"})
+
+            res.json(token);
+
         });
     } catch (err) {
         console.error(err);
@@ -36,7 +40,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.get('/nuevoingreso', (req, res) => {
+router.get('/nuevoingreso',  (req, res) => {
     const countOnly = req.query.count === 'true'
 
     const query = countOnly
@@ -57,7 +61,7 @@ router.get('/nuevoingreso', (req, res) => {
     });
 });
 
-router.get('/extension', (req, res) => {
+router.get('/extension',  (req, res) => {
     const countOnly = req.query.count === 'true'
 
     const query = countOnly
@@ -78,7 +82,7 @@ router.get('/extension', (req, res) => {
     });
 });
 
-router.get('/noinscritos', (req, res) => {
+router.get('/noinscritos',  (req, res) => {
     const countOnly = req.query.count === 'true'
 
     const query = countOnly
@@ -99,7 +103,7 @@ router.get('/noinscritos', (req, res) => {
     });
 });
 
-router.get('/regulares', (req, res) => {
+router.get('/regulares',  (req, res) => {
     const countOnly = req.query.count === 'true'
 
     const query = countOnly
@@ -120,7 +124,7 @@ router.get('/regulares', (req, res) => {
     });
 });
 
-router.get('/reincorporados', (req, res) => {
+router.get('/reincorporados',  (req, res) => {
     const countOnly = req.query.count === 'true';
 
     const query = countOnly
@@ -141,7 +145,7 @@ router.get('/reincorporados', (req, res) => {
     });
 });
 
-router.get('/egresados', (req, res) => {
+router.get('/egresados',  (req, res) => {
     const countOnly = req.query.count === 'true';
 
     const query = countOnly
@@ -158,6 +162,60 @@ router.get('/egresados', (req, res) => {
             } else {
                 res.json(results);
             }
+        }
+    });
+});
+
+// General EndPoints
+
+router.get('/count_carreras', (req, res) => {
+    const query = 'SELECT count(*) AS count, carrera FROM instituto_tesis.regulares GROUP BY carrera';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/count_lapsos', (req, res) => {
+    const query = 'SELECT count(*) AS count, lapso FROM instituto_tesis.regulares GROUP BY lapso';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/count_turnos', (req, res) => {
+    const query = 'SELECT count(*) AS count, turno FROM instituto_tesis.regulares GROUP BY turno';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+router.get('/count_generos', (req, res) => {
+    const query = 'SELECT count(*) AS count, sexo FROM instituto_tesis.regulares GROUP BY sexo';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
         }
     });
 });
