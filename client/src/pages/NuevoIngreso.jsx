@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {Container, Header, Content, Breadcrumb} from 'rsuite'
 import NavHeader from '../components/NavHeader';
+import { noInfo, errorRequest } from '../components/SwalFunctions';
+import 'datatables.net-dt/css/dataTables.dataTables.css';
+import $ from "jquery";
+import "datatables.net-dt"
 
 export default function NuevoIngreso() {
 
@@ -11,9 +15,39 @@ export default function NuevoIngreso() {
       fetch('http://localhost:5000/api/nuevoingreso')
         .then(response => response.json())
         .then(data => {setNuevoIngreso(data);
-          console.log(data.nuevo_ingreso)
+          if(data.length === 0){
+            setTimeout(noInfo, 800)
+          }
+          if (data.length > 0 && !$.fn.DataTable.isDataTable('#ningresoTable')) {
+            $(document).ready(function () {
+                $('#ningresoTable').DataTable({
+                    language: {
+                        "decimal": "",
+                        "emptyTable": "No hay información",
+                        "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                        "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                        "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                        "infoPostFix": "",
+                        "thousands": ",",
+                        "lengthMenu": "Mostrar _MENU_ Entradas",
+                        "loadingRecords": "Cargando...",
+                        "processing": "Procesando...",
+                        "search": "Buscar:",
+                        "zeroRecords": "Sin resultados encontrados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        }
+                    }
+                });
+            });
+          }
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(err => {console.log(err)
+            errorRequest()
+        })
     }, []);
 
     useEffect(() => {
@@ -49,8 +83,8 @@ export default function NuevoIngreso() {
 
                         </div>
 
-                        <div className='flex justify-center mx-4'>
-                            <table className="min-w-full divide-y divide-gray-200 mt-10">
+                        <div className=''>
+                            <table className="min-w-full divide-y divide-gray-200 mt-10" id='ningresoTable'>
                                 <thead className="bg-gray-50 dark:bg-slate-400">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>

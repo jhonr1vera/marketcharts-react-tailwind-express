@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Header, Breadcrumb, Content } from "rsuite";
 import NavHeader from "../components/NavHeader";
+import { noInfo, errorRequest } from '../components/SwalFunctions';
 import 'datatables.net-dt/css/dataTables.dataTables.css';
 import $ from "jquery";
 import "datatables.net-dt";
@@ -14,6 +15,10 @@ export default function Regulares() {
             .then(response => response.json())
             .then(data => {
                 setRegularesData(data);
+
+                if (data.length === 0 || data.length < 0){
+                    setTimeout(noInfo, 800)
+                }
 
                 if (data.length > 0 && !$.fn.DataTable.isDataTable('#myTable')) {
                     $(document).ready(function () {
@@ -40,11 +45,11 @@ export default function Regulares() {
                             }
                         });
                     });
-                } else {
-                    console.log('sin info');
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => {console.log(err)
+                errorRequest()
+            });
     }, []);
 
     useEffect(() => {

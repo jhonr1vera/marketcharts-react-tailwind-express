@@ -2,22 +2,54 @@ import React, {useEffect, useState} from 'react'
 import {Container, Content, Header, Breadcrumb} from 'rsuite'
 import NavHeader from '../components/NavHeader'
 import Footer from '../components/Footer'
+import { noInfo, errorRequest } from '../components/SwalFunctions';
+import 'datatables.net-dt/css/dataTables.dataTables.css';
+import $ from "jquery";
+import "datatables.net-dt"
 
 export default function Egresados() {
 
     const [egresadosData, setEgresadosData] = useState([]);
     const [totalEgresados, setTotalEgresados] = useState(0);
-    const [filteredEgresados, setFilteredEgresados] = useState([]);
-    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:5000/api/egresados')
             .then(res => res.json())
             .then(data => {
                 setEgresadosData(data);
-                setFilteredEgresados(data);
+                if(data.length === 0){
+                    setTimeout(noInfo, 800)
+                }
+                if (data.length > 0 && !$.fn.DataTable.isDataTable('#egresadosTable')) {
+                    $(document).ready(function () {
+                        $('#egresadosTable').DataTable({
+                            language: {
+                                "decimal": "",
+                                "emptyTable": "No hay información",
+                                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                                "infoPostFix": "",
+                                "thousands": ",",
+                                "lengthMenu": "Mostrar _MENU_ Entradas",
+                                "loadingRecords": "Cargando...",
+                                "processing": "Procesando...",
+                                "search": "Buscar:",
+                                "zeroRecords": "Sin resultados encontrados",
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Ultimo",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            }
+                        });
+                    });
+                }
             })
-            .catch(err => console.log(err))
+            .catch(err => {console.log(err)
+                errorRequest()
+            })
     },[])
 
     useEffect(() => {
@@ -28,24 +60,13 @@ export default function Egresados() {
             })
             .catch(err => console.log(err))
     },[])
-
-    useEffect(() => {
-        const filtered = egresadosData.filter(egresado => 
-            egresado.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            egresado.apellido.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            String(egresado.cedula).toLowerCase().includes(searchTerm.toLowerCase()) ||
-            egresado.carrera.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            egresado.mencion.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setFilteredEgresados(filtered);
-    }, [searchTerm, egresadosData]);
     
 
     return (
     <Container className='flex flex-1 overflow-auto flex-col'>
         
         <Header>
-            <NavHeader aditionalClass={'fixed'}/>
+            <NavHeader aditionalClass={''}/>
         </Header>
 
         <Content className=' bg-slate-200 h-screen'>
@@ -60,22 +81,10 @@ export default function Egresados() {
                         <h1 className='text-2xl tracking-wide text-slate-700 mt-5'>Estudiantes Egresados</h1>
                         <h3 className='text-lg mt-2 text-slate-700'>{totalEgresados} en total</h3>
                     </div>
-                    <div className='my-4 mx-[1.3rem] mt-10 flex items-center gap-2'>
-                    <h1 className='uppercase tracking-wider'>Buscar:</h1>
-                    <input 
-                        type="text"
-                        className=" px-4 py-2 rounded-md h-[40px] "
-                        placeholder=""
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                    />
                 </div>
-                </div>
-
-                
-
-                <div className='flex justify-center mx-4'>
-                    <table className="min-w-full divide-y divide-gray-200 mt-10">
+                <div className=''>
+                    <table className="min-w-full divide-y divide-gray-200 mt-10"
+                    id="egresadosTable">
                         <thead className="bg-gray-50 dark:bg-slate-400">
                             <tr>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
@@ -93,7 +102,7 @@ export default function Egresados() {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                        {filteredEgresados.map(egresados => (
+                        {egresadosData.map(egresados => (
                             <tr key={egresados.id}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{egresados.cedula}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{egresados.nombre}</td>

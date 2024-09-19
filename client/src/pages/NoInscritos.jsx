@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Container, Content, Breadcrumb, Header} from 'rsuite'
 import NavHeader from '../components/NavHeader'
+import { noInfo, errorRequest } from '../components/SwalFunctions'
+import 'datatables.net-dt/css/dataTables.dataTables.css';
+import $ from "jquery";
+import "datatables.net-dt"
 
 export default function NoInscritos() {
 
@@ -8,16 +12,46 @@ export default function NoInscritos() {
     const [totalNoInscritos, setTotalNoInscritos] = useState(0);
 
     useEffect(() => {
-        fetch('http://localhost/api/noinscritos')
+        fetch('http://localhost:5000/api/noinscritos')
             .then(res => res.json())
             .then(data => {setNoInscritosData(data)
-                console.log(noInscritosData.data)
+                if(data.length === 0){
+                    setTimeout(noInfo, 800)
+                }
+                if (data.length > 0 && !$.fn.DataTable.isDataTable('#noInscritosTable')) {
+                    $(document).ready(function () {
+                        $('#noInscritosTable').DataTable({
+                            language: {
+                                "decimal": "",
+                                "emptyTable": "No hay información",
+                                "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+                                "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+                                "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+                                "infoPostFix": "",
+                                "thousands": ",",
+                                "lengthMenu": "Mostrar _MENU_ Entradas",
+                                "loadingRecords": "Cargando...",
+                                "processing": "Procesando...",
+                                "search": "Buscar:",
+                                "zeroRecords": "Sin resultados encontrados",
+                                "paginate": {
+                                    "first": "Primero",
+                                    "last": "Ultimo",
+                                    "next": "Siguiente",
+                                    "previous": "Anterior"
+                                }
+                            }
+                        });
+                    });
+                }
             })
-            .catch(err => console.log(err))
+            .catch(err => {console.log(err)
+                errorRequest()
+            })
     }, [])
 
     useEffect(() => {
-        fetch('http://localhost/api/noinscritos?count=true')
+        fetch('http://localhost:5000/api/noinscritos?count=true')
         .then(res => res.json())
         .then(data => setTotalNoInscritos(data.total))
         .catch(err => console.log(err))
@@ -30,7 +64,7 @@ export default function NoInscritos() {
             <NavHeader/>
         </Header>
 
-        <Content className=' bg-slate-200 h-screen'>
+        <Content className='bg-slate-200 h-screen'>
         <div className='my-3 mx-4'>
                     <Breadcrumb>
                         <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
@@ -46,8 +80,9 @@ export default function NoInscritos() {
 
                         </div>
 
-                        <div className='flex justify-center mx-4'>
-                            <table className="min-w-full divide-y divide-gray-200 mt-10">
+                        <div className=''>
+                            <table className="min-w-full divide-y divide-gray-200 mt-10"
+                            id='noInscritosTable'>
                                 <thead className="bg-gray-50 dark:bg-slate-400">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cédula</th>
@@ -65,7 +100,8 @@ export default function NoInscritos() {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                {noInscritosData.map(no_inscritos => (
+                                {
+                                noInscritosData.map(no_inscritos => (
                                     <tr key={no_inscritos.id}>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{no_inscritos.cedula}</td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{no_inscritos.nombre}</td>
