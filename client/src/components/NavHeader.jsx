@@ -6,22 +6,30 @@ import TableIcon from '@rsuite/icons/Table';
 import Sun from '../assets/sun.svg';
 import Moon from '../assets/moon.svg';
 import NavItem from 'rsuite/esm/Nav/NavItem';
+import { useNavigate } from 'react-router-dom';
 
 function NavHeader({aditionalClass}) {
 
-    const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
-    const handleDarkMode = () => {
-        setDarkMode(!darkMode);
+    // const [darkMode, setDarkMode] = useState(false);
+
+    // const handleDarkMode = () => {
+    //     setDarkMode(!darkMode);
+    // };
+
+    // useEffect(() => {
+    //     if (darkMode) {
+    //         document.documentElement.classList.add('dark');
+    //     } else {
+    //         document.documentElement.classList.remove('dark');
+    //     }
+    // }, [darkMode]);
+
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      navigate('/login')
     };
-
-    useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    }, [darkMode]);
 
 
   return (
@@ -43,7 +51,7 @@ function NavHeader({aditionalClass}) {
                     <Nav.Menu 
                     title="Tablas"
                     icon={<TableIcon/>}
-                    className='text-base dark:text-slate-400 dark:bg-Very-Dark-Blue'>
+                    className='text-sm dark:text-slate-400 dark:bg-Very-Dark-Blue'>
                       <a href="/nuevoingreso" ><Nav.Item className='dark:text-slate-400 hover:decoration-wavy'>Nuevo Ingreso</Nav.Item></a>
                       <a href="/regulares"><Nav.Item className='dark:text-slate-400'>Regulares</Nav.Item></a>
                       <a href="/reincorporados"><Nav.Item className='dark:text-slate-400'>Reincorporados</Nav.Item></a>
@@ -52,24 +60,23 @@ function NavHeader({aditionalClass}) {
                       <a href="/egresados"><Nav.Item className='dark:text-slate-400'>Egresados</Nav.Item></a>
                     </Nav.Menu>
                     
-                    <button type='button' onClick={handleDarkMode} className=''>
+                    {/* <button type='button' onClick={handleDarkMode} className=''>
                       <Nav.Item className=' dark:hover:bg-slate-600'>
                           <img src={darkMode ? Sun : Moon} alt="" />
                       </Nav.Item>
-                    </button>
+                    </button> */}
 
                     <Nav.Menu  
                     as='button' 
                     className='gap-4  dark:hover:bg-slate-600 dark:hover:text-white mobile:text-base  dark:text-slate-400 dark:bg-Very-Dark-Blue' 
-                    title = 'Usuario' icon={<Avatar src="https://i.pravatar.cc/150?u=1" circle></Avatar>}>
-                    
-                    <a href='/login'>
+                    title = 'Usuario' icon={<Avatar src="https://i.pravatar.cc/150?u=1" circle></Avatar>}>                     
+                      
                       <Nav.Item icon={<ExitIcon/>}
                       className=' dark:text-slate-400'
+                      onClick={handleLogout}
                       >
                         Salir
                       </Nav.Item>
-                    </a>
                     </Nav.Menu>
                 </Nav>
 

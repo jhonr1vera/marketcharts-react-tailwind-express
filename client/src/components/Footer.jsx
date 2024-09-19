@@ -9,7 +9,7 @@ export default function Footer() {
         <div>
             <h1 className='text-xl font-bold mb-4'>MarketCharts</h1>
             <p>Todos los derechos reservados a:</p>
-            <p>MarketCharts inc.</p>
+            <p>MarketCharts Inc.</p>
         </div>
         <div className='grid'>
             <h1 className='underline mobile:text-sm font-bold'>Enlaces rápidos</h1>
