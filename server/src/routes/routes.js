@@ -31,12 +31,22 @@ router.post('/login', async (req, res) => {
 
             const token = jwt.sign({username: user.nombre_usuario}, "secretKey", {expiresIn: "1h"})
 
+            req.session.name = user.name;
+
             res.json(token);
 
         });
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.get('/user', (req, res) => {
+    if (req.session.name) {
+        res.json({ name: req.session.name });
+    } else {
+        res.status(401).json({ message: '' });
     }
 });
 
@@ -220,5 +230,17 @@ router.get('/count_generos', (req, res) => {
     });
 });
 
+router.get('/count_motivos', (req, res) => {
+    const query = 'SELECT count(*) AS count, motivo_ingreso FROM instituto_tesis.nuevo_ingreso GROUP BY motivo_ingreso';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
 
 module.exports = router;
