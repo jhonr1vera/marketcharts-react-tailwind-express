@@ -18,7 +18,7 @@ export default function Login() {
             toast: true,
             position: "center",
             showConfirmButton: false,
-            timer: 1500,
+            timer: 2000,
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
@@ -47,7 +47,7 @@ export default function Login() {
             body: JSON.stringify({
                 nombre_usuario: e.target.username.value,
                 contrasenia: e.target.password.value,
-            }),
+            }), credentials: 'include',
         })
             .then((response) => {
                 if (!response.ok) {
@@ -80,7 +80,7 @@ export default function Login() {
             <div className='flex bg-white py-[2.8rem] pl-[4.3rem] pr-[4rem] rounded-xl'>
                 <form onSubmit={handleSubmit}>
                     <h1 className='mb-2 text-slate-800'>MARKETCHARTS</h1>
-                    <h1 className='text-2xl mb-3 text-slate-800 tracking-wide'>INICIO DE SESIÓN</h1>
+                    <h1 className='text-2xl mb-3 text-slate-800 tracking-wide font-semibold'>INICIO DE SESIÓN</h1>
                     <div className="mb-6">
                         <label htmlFor="username" className="block text-slate-600 text-base tracking-wide mb-1">
                             USUARIO
@@ -114,7 +114,7 @@ export default function Login() {
                             <button
                                 type='button'
                                 onClick={toggleVisibility}
-                                className='absolute right-2 top-1/2 transform -translate-y-1/2'>
+                                className='absolute right-2 top-1/2 translate-y-[-10px]'>
                                 <img src={Eye} alt="Toggle visibility" />
                             </button>
                         </div>

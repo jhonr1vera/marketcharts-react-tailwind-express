@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 function NavHeader({aditionalClass}) {
 
+  const [name, setName] = useState([])
   const navigate = useNavigate();
 
     // const [darkMode, setDarkMode] = useState(false);
@@ -25,6 +26,29 @@ function NavHeader({aditionalClass}) {
     //         document.documentElement.classList.remove('dark');
     //     }
     // }, [darkMode]);
+
+    useEffect(() => {
+      const fetchUsername = async () => {
+        try {
+          const response = await fetch('http://localhost:5000/api/user', {
+            method: 'GET',
+            credentials: 'include',
+          });
+  
+          const data = await response.json();
+  
+          if (response.ok) {
+            setName(data.name);
+          } else {
+            console.log(data.message);
+          }
+        } catch (error) {
+          console.error('Error al obtener el username:', error);
+        }
+      };
+  
+      fetchUsername();
+    })
 
     const handleLogout = () => {
       localStorage.removeItem('token');
@@ -69,7 +93,7 @@ function NavHeader({aditionalClass}) {
                     <Nav.Menu  
                     as='button' 
                     className='gap-4  dark:hover:bg-slate-600 dark:hover:text-white mobile:text-base  dark:text-slate-400 dark:bg-Very-Dark-Blue' 
-                    title = 'Usuario' icon={<Avatar src="https://i.pravatar.cc/150?u=1" circle></Avatar>}>                     
+                    title = {name} icon={<Avatar circle></Avatar>}>                     
                       
                       <Nav.Item icon={<ExitIcon/>}
                       className=' dark:text-slate-400'
