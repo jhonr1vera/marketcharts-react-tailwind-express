@@ -26,6 +26,7 @@ export default function Home() {
   const [turnosCount, setTurnosCount] = useState([]);
   const [generos, setGeneros] = useState([]);
   const [motivos, setMotivos] = useState([]);
+  const [fechas, setFechas] = useState([])
 
   // Conteos
 
@@ -92,6 +93,7 @@ export default function Home() {
       })
       .catch((err) => console.log(err));
   }, []);
+
 
   useLayoutEffect(() => {
     if (carrerasCount.length > 0 && document.getElementById("chartCarreras")) {
@@ -359,6 +361,81 @@ export default function Home() {
     };
   }, [motivos]);
 
+   // Years
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/fecha_egreso')
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+                setFechas(data);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    useLayoutEffect(() => {
+        if (fechas.length === 0) return;
+
+        let root = am5.Root.new('chartEgreso');
+        root.setThemes([am5themes_Animated.new(root)]);
+
+        let chart = root.container.children.push(
+            am5xy.XYChart.new(root, {
+                panX: true,
+                panY: false,
+                wheelX: 'panX',
+                wheelY: 'zoomX',
+                pinchZoomX: true,
+            })
+        );
+
+        let xAxis = chart.xAxes.push(
+            am5xy.DateAxis.new(root, {
+                baseInterval: { timeUnit: 'month', count: 1 },
+                renderer: am5xy.AxisRendererX.new(root, {}),
+                tooltip: am5.Tooltip.new(root, {}),
+            })
+        );
+
+        let yAxis = chart.yAxes.push(
+            am5xy.ValueAxis.new(root, {
+                renderer: am5xy.AxisRendererY.new(root, {}),
+            })
+        );
+
+        let series = chart.series.push(
+            am5xy.LineSeries.new(root, {
+                name: 'Egresos',
+                xAxis: xAxis,
+                yAxis: yAxis,
+                valueYField: 'value',
+                valueXField: 'date',
+                tooltip: am5.Tooltip.new(root, {
+                    labelText: "{valueY}"
+                })
+            })
+        );
+
+        series.fills.template.setAll({
+            visible: true,
+            fillOpacity: 0.3
+        });
+
+        chart.set('scrollbarX', am5.Scrollbar.new(root, {
+            orientation: 'horizontal',
+        }));
+
+        series.data.setAll(fechas);
+        xAxis.data.setAll(fechas);
+
+        series.appear(1000);
+        chart.appear(1000, 100);
+
+        return () => {
+            root.dispose();
+        };
+    }, [fechas]);
+
   return (
     <div>
       <Container>
@@ -408,7 +485,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartEstudiantes"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "320px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -417,7 +494,7 @@ export default function Home() {
                 </h1>
                 <div
                   id="chartCarreras"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "320px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -427,7 +504,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartTurnos"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "320px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -437,7 +514,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartLapsos"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "320px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -459,6 +536,12 @@ export default function Home() {
                   id="chartMotivos"
                   style={{ width: "100%", height: "300px" }}
                 ></div>
+              </div>
+              <div className="bg-white shadow-md rounded-md w-[95%] p-4">
+                <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
+                <span className="font-semibold">Histórico:</span> Fechas de Egreso
+                </h1>
+               <div id="chartEgreso" style={{ width: "100%", height: "500px" }}></div>
               </div>
             </div>
           </div>

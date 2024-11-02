@@ -204,7 +204,7 @@ router.get('/count_lapsos', (req, res) => {
     });
 });
 
-router.get('/count_turnos', (req, res) => {
+router.get('/count_turnos', (req, res) => { //Hacer un left Join con los nuevo ingreso
     const query = 'SELECT count(*) AS count, turno FROM instituto_tesis.regulares GROUP BY turno';
 
     connection.query(query, (err, results) => {
@@ -242,5 +242,18 @@ router.get('/count_motivos', (req, res) => {
         }
     });
 });
+
+router.get('/fecha_egreso', (req, res) => {
+    const query = "SELECT UNIX_TIMESTAMP(fecha_egreso) * 1000 AS date, COUNT(*) AS value FROM egresados GROUP BY fecha_egreso";
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    })
+})
 
 module.exports = router;

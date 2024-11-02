@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { errorRequest } from '../components/SwalFunctions';
 import Eye from '../assets/eye.svg';
 import Swal from 'sweetalert2'
 
@@ -62,7 +63,10 @@ export default function Login() {
                 Success();
                 
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log(err)
+                    errorRequest()
+            });
     };
 
     const toggleVisibility = () => {

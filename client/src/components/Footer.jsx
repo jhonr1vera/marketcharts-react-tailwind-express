@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Footer() {
   return (
-    <div className='flex justify-between px-60 py-12 bg-slate-100 dark:bg-Very-Dark-Blue-Top
+    <div className='flex justify-between px-60 py-12 bg-slate-100 bottom-0 dark:bg-Very-Dark-Blue-Top 
     tablet:px-7
     tablet:py-12
     mobile:px-2  '>
@@ -25,8 +25,8 @@ export default function Footer() {
         </div>
         <div className=''>
           <h1 className='font-bold underline text-md mobile:text-sm'>Proyecto desarrollado por:</h1>
-          <p className='translate-y-[-5px]'>Raymond Aponte</p>
-          <p>Jhon Rivera</p>
+          <p className='translate-y-[-5px]'>Aponte Raymond</p>
+          <p>Rivera Jhon</p>
         </div>
     </div>
   )

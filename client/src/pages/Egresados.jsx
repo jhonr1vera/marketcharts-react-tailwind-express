@@ -58,7 +58,9 @@ export default function Egresados() {
       .then((data) => {
         setTotalEgresados(data.total);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+      });
   }, []);
 
   return (
