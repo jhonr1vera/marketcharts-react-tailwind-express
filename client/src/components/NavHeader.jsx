@@ -7,25 +7,12 @@ import Sun from '../assets/sun.svg';
 import Moon from '../assets/moon.svg';
 import NavItem from 'rsuite/esm/Nav/NavItem';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/Logo_ISUM.png'
 
 function NavHeader({aditionalClass}) {
 
   const [name, setName] = useState([])
   const navigate = useNavigate();
-
-    // const [darkMode, setDarkMode] = useState(false);
-
-    // const handleDarkMode = () => {
-    //     setDarkMode(!darkMode);
-    // };
-
-    // useEffect(() => {
-    //     if (darkMode) {
-    //         document.documentElement.classList.add('dark');
-    //     } else {
-    //         document.documentElement.classList.remove('dark');
-    //     }
-    // }, [darkMode]);
 
     useEffect(() => {
       const fetchUsername = async () => {
@@ -61,7 +48,7 @@ function NavHeader({aditionalClass}) {
 
         <Navbar className='dark:bg-Very-Dark-Blue-Top w-screen'>
                 <Navbar.Brand href="/" className='  text-2xl flex items-center tracking-wide dark:text-slate-400 mobile:ml-2 mobile:text-xl'>
-                    MarketCharts
+                    MarketCharts<span className='translate-y-[3px] text-sm font-bold'>&nbsp;x&nbsp;</span>  <img className="h-8" src={logo} alt="Logo ISUM" />
                 </Navbar.Brand>
                 <Nav className=' items-center flex mr-4' pullRight>
                   
@@ -83,12 +70,6 @@ function NavHeader({aditionalClass}) {
                       <a href="/extension"><Nav.Item className='dark:text-slate-400'>Extensión</Nav.Item></a>
                       <a href="/egresados"><Nav.Item className='dark:text-slate-400'>Egresados</Nav.Item></a>
                     </Nav.Menu>
-                    
-                    {/* <button type='button' onClick={handleDarkMode} className=''>
-                      <Nav.Item className=' dark:hover:bg-slate-600'>
-                          <img src={darkMode ? Sun : Moon} alt="" />
-                      </Nav.Item>
-                    </button> */}
 
                     <Nav.Menu  
                     as='button' 
