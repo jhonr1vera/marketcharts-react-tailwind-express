@@ -123,12 +123,7 @@ export default function Login() {
                             </button>
                         </div>
                     </div>
-
-                    <p className='text-xs mb-6 mt-1 flex justify-end underline text-purple-500'>
-                        <a href="#">¿Olvidaste tu contraseña?</a>
-                    </p>
-
-                    <div className='justify-around flex'>
+                    <div className='justify-around flex mt-3'>
                         <button type="submit" className="bg-slate-800 text-white py-2 px-4 rounded-2xl hover:bg-slate-700">
                             Entrar
                         </button>
