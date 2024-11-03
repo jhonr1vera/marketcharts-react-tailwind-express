@@ -29,7 +29,7 @@ router.post('/login', async (req, res) => {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
-            const token = jwt.sign({username: user.nombre_usuario}, "secretKey", {expiresIn: "1h"})
+            const token = jwt.sign({username: user.nombre_usuario}, "secretKey", {expiresIn: "10h"})
 
             req.session.name = user.name;
 
@@ -255,5 +255,45 @@ router.get('/fecha_egreso', (req, res) => {
         }
     })
 })
+
+router.get('/diplomado_ext', (req, res) => {
+    const query = "SELECT count(*) AS count, diplomado FROM instituto_tesis.extension GROUP BY diplomado"
+
+    connection.query(query, (err, results) => {
+        if(err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        }else {
+            res.json(results);
+        }
+    })
+})
+
+router.get('/generos_ext', (req, res) => {
+    const query = 'SELECT count(*) AS count, sexo FROM instituto_tesis.extension GROUP BY sexo';
+
+    connection.query(query, (err, results) => {
+        if(err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        }else {
+            res.json(results);
+        }
+    })
+})
+
+router.get('/motivos_extension', (req, res) => {
+    const query = 'SELECT count(*) AS count, motivo_ingreso FROM instituto_tesis.extension GROUP BY motivo_ingreso';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 
 module.exports = router;

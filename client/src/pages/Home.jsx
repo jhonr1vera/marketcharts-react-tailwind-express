@@ -3,6 +3,7 @@ import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import Card from "../components/Card";
 import { Container, Header, Content, Breadcrumb } from "rsuite";
+import html2canvas from 'html2canvas';
 // Amcharts
 import * as am5 from "@amcharts/amcharts5";
 import * as am5percent from "@amcharts/amcharts5/percent";
@@ -10,6 +11,36 @@ import * as am5xy from "@amcharts/amcharts5/xy";
 import am5themes_Animated from "@amcharts/amcharts5/themes/Animated";
 
 export default function Home() {
+
+  // Extraer fecha actual
+  var opcionesFecha = { year: 'numeric', month: 'short', day: 'numeric' };
+  var fecha = new Date()
+  .toLocaleDateString('es',opcionesFecha)
+  .replace(/ /g,'-')
+  .replace('.','')
+  .replace(/-([a-z])/, function (x) {return '-' + x[1].toUpperCase()});
+
+  // Funcion extraer reporte
+  useEffect(() => {
+    const button = document.getElementById('reportImage');
+    const handleClick = () => {
+      let element = document.getElementById('printReport');
+      html2canvas(element, {scale: 2}).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = `informe-${fecha}.png`;
+        link.click();
+      });
+    };
+
+    button.addEventListener('click', handleClick);
+
+    return () => {
+      button.removeEventListener('click', handleClick);
+    };
+  }, []);
+ 
   // Conteos
 
   const [totalNoInscritos, setTotalNoInscritos] = useState(0);
@@ -27,6 +58,9 @@ export default function Home() {
   const [generos, setGeneros] = useState([]);
   const [motivos, setMotivos] = useState([]);
   const [fechas, setFechas] = useState([])
+  const [diplomadosExt, setDiplomadosExt] = useState([])
+  const [generosExt, setGenerosExt] = useState([])
+  const [motivosExt, setMotivosExt] = useState([])
 
   // Conteos
 
@@ -274,7 +308,7 @@ export default function Home() {
     };
   }, [generos]);
 
-  // For Work
+  // Tipo Estudiante
 
   useLayoutEffect(() => {
     let root = am5.Root.new("chartEstudiantes");
@@ -337,7 +371,6 @@ export default function Home() {
       }) 
     );
 
-    // Create series
     let series = chart.series.push(
       am5percent.PieSeries.new(root, {
         name: "Motivo de Ingreso",
@@ -367,7 +400,6 @@ export default function Home() {
         fetch('http://localhost:5000/api/fecha_egreso')
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 setFechas(data);
             })
             .catch((err) => console.log(err));
@@ -436,6 +468,139 @@ export default function Home() {
         };
     }, [fechas]);
 
+    // Extension Diplomados
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/diplomado_ext")
+        .then((res) => res.json())
+        .then((data) => {
+          setDiplomadosExt(data);
+        })
+        .catch((err) => console.log(err));
+    }, []);
+  
+  
+    useLayoutEffect(() => {
+      if (diplomadosExt.length > 0 && document.getElementById("chartDiplomadoExt")) {
+        let root = am5.Root.new("chartDiplomadoExt");
+  
+        root.setThemes([am5themes_Animated.new(root)]);
+  
+        let chart = root.container.children.push(
+          am5percent.PieChart.new(root, {
+            layout: root.verticalHorizontal,
+          })
+        );
+  
+        let series = chart.series.push(
+          am5percent.PieSeries.new(root, {
+            name: "Carreras",
+            valueField: "count",
+            categoryField: "diplomado",
+          })
+        );
+        series.data.setAll(diplomadosExt);
+  
+        let legend = chart.children.push(
+          am5.Legend.new(root, {
+            centerX: am5.percent(50),
+            x: am5.percent(50),
+            layout: root.horizontalLayout,
+          })
+        );
+        legend.data.setAll(series.dataItems);
+  
+        return () => {
+          root.dispose();
+        };
+      }
+    }, [diplomadosExt]);
+
+    // Extension Generos
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/generos_ext")
+        .then((res) => res.json())
+        .then((data) => setGenerosExt(data))
+        .catch((err) => console.log(err));
+    }, []);
+  
+    useLayoutEffect(() => {
+      let root = am5.Root.new("chartGenerosExt");
+      root.setThemes([am5themes_Animated.new(root)]);
+  
+      let chart = root.container.children.push(
+        am5percent.PieChart.new(root, {
+          layout: root.verticalHorizontal,
+        })
+      );
+  
+      let series = chart.series.push(
+        am5percent.PieSeries.new(root, {
+          name: "Generos",
+          valueField: "count",
+          categoryField: "sexo",
+        })
+      );
+      series.data.setAll(generosExt);
+  
+      let legend = chart.children.push(
+        am5.Legend.new(root, {
+          centerX: am5.percent(50),
+          x: am5.percent(50),
+          layout: root.horizontalLayout,
+        })
+      );
+  
+      legend.data.setAll(series.dataItems);
+  
+      return () => {
+        root.dispose();
+      };
+    }, [generosExt]);
+
+    // motivos Extension
+
+    useEffect(() => {
+      fetch("http://localhost:5000/api/motivos_extension")
+        .then((res) => res.json())
+        .then((data) => setMotivosExt(data))
+        .catch((err) => console.log(err))
+    }, [])
+
+    useLayoutEffect(() => {
+      let root = am5.Root.new("chartMotivosExt");
+      root.setThemes([am5themes_Animated.new(root)]);
+  
+      let chart = root.container.children.push( 
+        am5percent.PieChart.new(root, {
+          layout: root.verticalHorizontal
+        }) 
+      );
+  
+      let series = chart.series.push(
+        am5percent.PieSeries.new(root, {
+          name: "Motivo de Ingreso",
+          valueField: "count",
+          categoryField: "motivo_ingreso"
+        })
+      );
+      series.data.setAll(motivosExt);
+  
+      // Add legend
+      let legend = chart.children.push(am5.Legend.new(root, {
+        centerX: am5.percent(50),
+        x: am5.percent(50),
+        layout: root.horizontalLayout
+      }));
+  
+      legend.data.setAll(series.dataItems);
+  
+      return () => {
+        root.dispose();
+      };
+    }, [motivosExt]);
+
   return (
     <div>
       <Container>
@@ -445,12 +610,15 @@ export default function Home() {
       </Container>
       <Container>
         <Content className="bg-slate-200 dark:bg-Dark-Desaturated-Blue">
-          <div className="mt-16 mx-6 inline-flex">
-            <h1 className="text-xl tracking-wide flex text-slate-700 justify-center dark:text-Desaturated-Blue">
+          <div className="mt-16 px-6 inline-flex items-center justify-between w-[100%]">
+            <h1 className="text-xl tracking-wide flex text-slate-700">
               Dashboard
             </h1>
+            <button className="text-lg bg-white rounded-md px-2 py-[0.6rem] flex hover:bg-slate-300" id="reportImage">
+              Extraer Informe Gráfico
+            </button>
           </div>
-          <div className="mx-6 my-4">
+          <div className="mx-6 my-4 bg-slate-200" id="printReport">
             <div className="flex flex-wrap gap-4 justify-center mb-4">
               <Card
                 title={"Estudiantes Egresados"}
@@ -477,7 +645,10 @@ export default function Home() {
                 quantity={totalExtension}
               ></Card>
             </div>
-            <div className="flex flex-wrap gap-5 justify-center">
+            <h1 className="text-3xl mb-4  text-slate-700 font-bold flex justify-center">
+              ISUM
+            </h1>
+            <div className="flex flex-wrap gap-5 justify-center ">
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
                 <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
                   Estudiantes por Tipo
@@ -485,7 +656,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartEstudiantes"
-                  style={{ width: "100%", height: "320px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -494,7 +665,7 @@ export default function Home() {
                 </h1>
                 <div
                   id="chartCarreras"
-                  style={{ width: "100%", height: "320px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -504,7 +675,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartTurnos"
-                  style={{ width: "100%", height: "320px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -514,17 +685,17 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartLapsos"
-                  style={{ width: "100%", height: "320px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
                 <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
-                  Estudiantes por Genero
+                  Estudiantes por Género
                 </h1>
                 <div
                   className="my-5"
                   id="chartGeneros"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -534,7 +705,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartMotivos"
-                  style={{ width: "100%", height: "300px" }}
+                  style={{ width: "100%", height: "355px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[95%] p-4">
@@ -543,6 +714,41 @@ export default function Home() {
                 </h1>
                <div id="chartEgreso" style={{ width: "100%", height: "500px" }}></div>
               </div>
+
+              <h1 className="text-3xl mb-2  text-slate-700 font-bold w-[100%] flex justify-center">
+              ISUM: Extensión Universitaria
+              </h1>
+
+              <div className="bg-white shadow-md rounded-md w-[95%] p-4">
+                <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
+                  Estudiantes por Diplomado
+                </h1>
+                <div
+                  id="chartDiplomadoExt"
+                  style={{ width: "100%", height: "400px" }}
+                ></div>
+              </div>
+              <div className="bg-white shadow-md rounded-md w-[47%] p-4">
+                <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
+                  Estudiantes por Género
+                </h1>
+                <div
+                  className="my-5"
+                  id="chartGenerosExt"
+                  style={{ width: "100%", height: "355px" }}
+                ></div>
+              </div>
+              <div className="bg-white shadow-md rounded-md w-[47%] p-4">
+                <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
+                  Motivo de Ingreso
+                </h1>
+                <div
+                  className="my-5"
+                  id="chartMotivosExt"
+                  style={{ width: "100%", height: "355px" }}
+                ></div>
+              </div>
+
             </div>
           </div>
         </Content>
