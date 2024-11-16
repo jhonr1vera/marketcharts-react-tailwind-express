@@ -39,7 +39,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+    
         fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
@@ -50,25 +50,26 @@ export default function Login() {
                 contrasenia: e.target.password.value,
             }), credentials: 'include',
         })
-            .then((response) => {
-                if (!response.ok) {
-                    handleError();
-                    throw new Error('Login Failed');
-                }
+        .then((response) => {
+            if (response.ok) {
                 return response.json();
-            })
-            .then((data) => {
-                localStorage.setItem('token', data.token);
-                navigate('/');
-                Success();
-                
-            })
-            .catch((err) => {
-                console.log(err)
-                    errorRequest()
-            });
+            } else if (response.status === 404 || response.status === 401) {
+                handleError();
+                return Promise.reject('Credenciales incorrectas');
+            } else {
+                errorRequest();
+                return Promise.reject('Error en el servidor');
+            }
+        })
+        .then((data) => {
+            localStorage.setItem('token', data.token);
+            navigate('/');
+            Success();
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     };
-
     const toggleVisibility = () => {
         setVisible((prevVisible) => !prevVisible);
     };
