@@ -3,13 +3,13 @@ import { Container, Content, Breadcrumb, Header } from "rsuite";
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
+import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
 
 export default function Entension() {
   const [extensionData, setExtensionData] = useState([]);
-  const [totalExtension, setTotalExtension] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/extension")
@@ -53,17 +53,8 @@ export default function Entension() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/extension?count=true")
-      .then((res) => res.json())
-      .then((data) => {
-        setTotalExtension(data.total);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <Container className="bg-slate-200 flex flex-1 flex-col">
+    <Container className="bg-slate-200 flex flex-1 flex-col min-h-screen">
       <Header>
         <NavHeader />
       </Header>
@@ -81,9 +72,10 @@ export default function Entension() {
                   Estudiantes de Extensión
                 </h1>
                 <h3 className="text-lg mt-2 text-slate-700">
-                  {totalExtension} en total
+                  {extensionData.length} en total
                 </h3>
               </div>
+              <LoadFunctions api="extension" />
             </div>
 
             <div className="">

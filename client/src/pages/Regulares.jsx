@@ -3,13 +3,13 @@ import { Container, Header, Breadcrumb, Content } from "rsuite";
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
+import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
 
 export default function Regulares() {
   const [regularesData, setRegularesData] = useState([]);
-  const [totalRegulares, setTotalRegulares] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/regulares")
@@ -54,15 +54,8 @@ export default function Regulares() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/regulares?count=true")
-      .then((res) => res.json())
-      .then((data) => setTotalRegulares(data.total))
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <Container className="bg-slate-200 flex flex-col">
+    <Container className="bg-slate-200 flex flex-col min-h-screen">
       <Header>
         <NavHeader />
       </Header>
@@ -79,9 +72,10 @@ export default function Regulares() {
                 Estudiantes Regulares
               </h1>
               <h3 className="text-lg mt-2 text-slate-700">
-                {totalRegulares} en total
+                {regularesData.length} en total
               </h3>
             </div>
+            <LoadFunctions api="regulares" />
           </div>
 
           <div className="">

@@ -3,13 +3,13 @@ import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import { Container, Header, Content, Breadcrumb } from "rsuite";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
+import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
 
 export default function Reincorporados() {
   const [reincorporadosData, setReincorporadosData] = useState([]);
-  const [totalReincorporados, setTotalReincorporados] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/reincorporados")
@@ -55,15 +55,8 @@ export default function Reincorporados() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/reincorporados?count=true")
-      .then((res) => res.json())
-      .then((data) => setTotalReincorporados(data.total))
-      .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <Container className="bg-slate-200 flex flex-col">
+    <Container className="bg-slate-200 flex flex-col min-h-screen">
       <Header>
         <NavHeader />
       </Header>
@@ -82,9 +75,10 @@ export default function Reincorporados() {
                 Estudiantes Reincorporados
               </h1>
               <h3 className="text-lg mt-2 text-slate-700">
-                {totalReincorporados} en total
+                {reincorporadosData.length} en total
               </h3>
             </div>
+            <LoadFunctions api="reincorporados" />
           </div>
 
           <div className="">

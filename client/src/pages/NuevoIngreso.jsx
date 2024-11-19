@@ -3,13 +3,13 @@ import { Container, Header, Content, Breadcrumb } from "rsuite";
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
+import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
 
 export default function NuevoIngreso() {
   const [nuevoingreso, setNuevoIngreso] = useState([]);
-  const [totalNuevoIngreso, setTotalNuevoIngreso] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/nuevoingreso")
@@ -52,13 +52,6 @@ export default function NuevoIngreso() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/nuevoingreso?count=true")
-      .then((res) => res.json())
-      .then((data) => setTotalNuevoIngreso(data.total))
-      .catch((err) => console.log(err));
-  });
-
   return (
     <Container className=" bg-slate-200 flex flex-col min-h-screen">
       <Header>
@@ -80,9 +73,10 @@ export default function NuevoIngreso() {
                 Estudiantes Nuevo Ingreso
               </h1>
               <h3 className="text-lg mt-2 text-slate-700">
-                {totalNuevoIngreso} en total
+                {nuevoingreso.length} en total
               </h3>
             </div>
+            <LoadFunctions api="nuevo_ingreso" />
           </div>
 
           <div className="mt-10">

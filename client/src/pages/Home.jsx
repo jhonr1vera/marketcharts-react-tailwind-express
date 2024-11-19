@@ -137,7 +137,7 @@ export default function Home() {
 
       let chart = root.container.children.push(
         am5percent.PieChart.new(root, {
-          layout: root.verticalHorizontal,
+          layout: root.verticalLayout,
         })
       );
 
@@ -154,10 +154,24 @@ export default function Home() {
         am5.Legend.new(root, {
           centerX: am5.percent(50),
           x: am5.percent(50),
-          layout: root.horizontalLayout,
+          layout: am5.GridLayout.new(root, {
+            maxColumns: 2,
+            spacing: 10,
+          }),
         })
       );
+
+      legend.labels.template.setAll({
+        width: 160,
+        truncate: true,
+      });
+
       legend.data.setAll(series.dataItems);
+
+      chart.set("paddingTop", 10);
+      chart.set("paddingBottom", 10);
+      chart.set("paddingRight", 10);
+      chart.set("paddingLeft", 10);
 
       return () => {
         root.dispose();
@@ -237,7 +251,7 @@ export default function Home() {
 
     let chart = root.container.children.push(
       am5percent.PieChart.new(root, {
-        layout: root.verticalHorizontal,
+        layout: root.verticalLayout,
       })
     );
 
@@ -254,11 +268,24 @@ export default function Home() {
       am5.Legend.new(root, {
         centerX: am5.percent(50),
         x: am5.percent(50),
-        layout: root.horizontalLayout,
+        layout: am5.GridLayout.new(root, {
+          maxColumns: 2,
+          spacing: 10,
+        }),
       })
     );
-
+  
+    legend.labels.template.setAll({
+      width: 130,
+      truncate: true,
+    });
+  
     legend.data.setAll(series.dataItems);
+  
+    chart.set("paddingTop", 10);
+    chart.set("paddingBottom", 10);
+    chart.set("paddingRight", 10);
+    chart.set("paddingLeft", 10);
 
     return () => {
       root.dispose();
@@ -280,7 +307,7 @@ export default function Home() {
 
     let chart = root.container.children.push(
       am5percent.PieChart.new(root, {
-        layout: root.verticalHorizontal,
+        layout: root.verticalLayout,
       })
     );
 
@@ -297,11 +324,24 @@ export default function Home() {
       am5.Legend.new(root, {
         centerX: am5.percent(50),
         x: am5.percent(50),
-        layout: root.horizontalLayout,
+        layout: am5.GridLayout.new(root, {
+          maxColumns: 2,
+          spacing: 10,
+        }),
       })
     );
-
+  
+    legend.labels.template.setAll({
+      width: 130,
+      truncate: true,
+    });
+  
     legend.data.setAll(series.dataItems);
+  
+    chart.set("paddingTop", 10);
+    chart.set("paddingBottom", 10);
+    chart.set("paddingRight", 10);
+    chart.set("paddingLeft", 10);
 
     return () => {
       root.dispose();
@@ -313,13 +353,13 @@ export default function Home() {
   useLayoutEffect(() => {
     let root = am5.Root.new("chartEstudiantes");
     root.setThemes([am5themes_Animated.new(root)]);
-
+  
     let chart = root.container.children.push(
       am5percent.PieChart.new(root, {
-        layout: root.verticalHorizontal,
+        layout: root.verticalLayout,
       })
     );
-
+  
     let data = [
       { category: "Nuevo Ingreso", count: totalNuevoIngreso },
       { category: "Regulares", count: totalRegulares },
@@ -327,7 +367,7 @@ export default function Home() {
       { category: "Reincorporados", count: totalReincorporados },
       { category: "No inscritos", count: totalNoInscritos },
     ];
-
+  
     let series = chart.series.push(
       am5percent.PieSeries.new(root, {
         name: "Series",
@@ -335,19 +375,32 @@ export default function Home() {
         categoryField: "category",
       })
     );
-
+  
     series.data.setAll(data);
-
+  
     let legend = chart.children.push(
       am5.Legend.new(root, {
         centerX: am5.percent(50),
         x: am5.percent(50),
-        layout: root.horizontalLayout,
+        layout: am5.GridLayout.new(root, {
+          maxColumns: 2,
+          spacing: 10,
+        }),
       })
     );
-
+  
+    legend.labels.template.setAll({
+      width: 130,
+      truncate: true,
+    });
+  
     legend.data.setAll(series.dataItems);
-
+  
+    chart.set("paddingTop", 10);
+    chart.set("paddingBottom", 10);
+    chart.set("paddingRight", 10);
+    chart.set("paddingLeft", 10);
+  
     return () => {
       root.dispose();
     };
@@ -367,7 +420,7 @@ export default function Home() {
 
     let chart = root.container.children.push( 
       am5percent.PieChart.new(root, {
-        layout: root.verticalHorizontal
+        layout: root.verticalLayout
       }) 
     );
 
@@ -380,14 +433,27 @@ export default function Home() {
     );
     series.data.setAll(motivos);
 
-    // Add legend
     let legend = chart.children.push(am5.Legend.new(root, {
       centerX: am5.percent(50),
       x: am5.percent(50),
-      layout: root.horizontalLayout
-    }));
+      layout: am5.GridLayout.new(root, {
+        maxColumns: 2,
+        spacing: 10,
+      }),
+    })
+  );
 
-    legend.data.setAll(series.dataItems);
+  legend.labels.template.setAll({
+    width: 130,
+    truncate: true,
+  });
+
+  legend.data.setAll(series.dataItems);
+
+  chart.set("paddingTop", 10);
+  chart.set("paddingBottom", 10);
+  chart.set("paddingRight", 10);
+  chart.set("paddingLeft", 10);
 
     return () => {
       root.dispose();
@@ -488,7 +554,7 @@ export default function Home() {
   
         let chart = root.container.children.push(
           am5percent.PieChart.new(root, {
-            layout: root.verticalHorizontal,
+            layout: root.verticalLayout,
           })
         );
   
@@ -505,10 +571,24 @@ export default function Home() {
           am5.Legend.new(root, {
             centerX: am5.percent(50),
             x: am5.percent(50),
-            layout: root.horizontalLayout,
+            layout: am5.GridLayout.new(root, {
+              maxColumns: 4,
+              spacing: 20,
+            }),
           })
         );
+      
+        legend.labels.template.setAll({
+          width: 220,
+          truncate: true,
+        });
+      
         legend.data.setAll(series.dataItems);
+      
+        chart.set("paddingTop", 10);
+        chart.set("paddingBottom", 10);
+        chart.set("paddingRight", 10);
+        chart.set("paddingLeft", 10);
   
         return () => {
           root.dispose();
@@ -531,7 +611,7 @@ export default function Home() {
   
       let chart = root.container.children.push(
         am5percent.PieChart.new(root, {
-          layout: root.verticalHorizontal,
+          layout: root.verticalLayout,
         })
       );
   
@@ -548,11 +628,24 @@ export default function Home() {
         am5.Legend.new(root, {
           centerX: am5.percent(50),
           x: am5.percent(50),
-          layout: root.horizontalLayout,
+          layout: am5.GridLayout.new(root, {
+            maxColumns: 2,
+            spacing: 10,
+          }),
         })
       );
-  
+    
+      legend.labels.template.setAll({
+        width: 130,
+        truncate: true,
+      });
+    
       legend.data.setAll(series.dataItems);
+    
+      chart.set("paddingTop", 10);
+      chart.set("paddingBottom", 10);
+      chart.set("paddingRight", 10);
+      chart.set("paddingLeft", 10);
   
       return () => {
         root.dispose();
@@ -574,7 +667,7 @@ export default function Home() {
   
       let chart = root.container.children.push( 
         am5percent.PieChart.new(root, {
-          layout: root.verticalHorizontal
+          layout: root.verticalLayout
         }) 
       );
   
@@ -587,14 +680,28 @@ export default function Home() {
       );
       series.data.setAll(motivosExt);
   
-      // Add legend
+      
       let legend = chart.children.push(am5.Legend.new(root, {
         centerX: am5.percent(50),
         x: am5.percent(50),
-        layout: root.horizontalLayout
-      }));
+        layout: am5.GridLayout.new(root, {
+          maxColumns: 2,
+          spacing: 15,
+        }),
+      })
+    );
   
-      legend.data.setAll(series.dataItems);
+    legend.labels.template.setAll({
+      width: 150,
+      truncate: true,
+    });
+  
+    legend.data.setAll(series.dataItems);
+  
+    chart.set("paddingTop", 10);
+    chart.set("paddingBottom", 10);
+    chart.set("paddingRight", 10);
+    chart.set("paddingLeft", 10);
   
       return () => {
         root.dispose();
@@ -602,7 +709,7 @@ export default function Home() {
     }, [motivosExt]);
 
   return (
-    <div>
+    <div className="">
       <Container>
         <Header>
           <NavHeader aditionalClass={"fixed"}></NavHeader>
@@ -610,13 +717,18 @@ export default function Home() {
       </Container>
       <Container>
         <Content className="bg-slate-200 dark:bg-Dark-Desaturated-Blue">
-          <div className="mt-16 px-6 inline-flex items-center justify-between w-[100%]">
+          <div className="mt-20 px-6 inline-flex items-center justify-between w-[100%]">
             <h1 className="text-xl tracking-wide flex text-slate-700">
               Dashboard
             </h1>
-            <button className="text-lg bg-white rounded-md px-2 py-[0.6rem] flex hover:bg-slate-300" id="reportImage">
-              Extraer Informe Gráfico
-            </button>
+            <div className="inline-flex gap-4">
+              <button className="text-lg text-white bg-blue-500 rounded-md px-2 py-[0.6rem] flex hover:bg-blue-600" id="reportImage">
+                Extraer Informe Gráfico
+              </button>
+              <button className="text-lg text-white bg-blue-500 rounded-md px-2 py-[0.6rem] flex hover:bg-blue-600" id="reportImage">
+                Extraer Informe Escrito
+              </button>
+            </div>
           </div>
           <div className="mx-6 my-4 bg-slate-200" id="printReport">
             <div className="flex flex-wrap gap-4 justify-center mb-4">
@@ -654,9 +766,9 @@ export default function Home() {
                   Estudiantes por Tipo
                 </h1>
                 <div
-                  className="my-5"
+                  className="my-5 w-full h-full"
                   id="chartEstudiantes"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "500px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -665,7 +777,7 @@ export default function Home() {
                 </h1>
                 <div
                   id="chartCarreras"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "500px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -675,7 +787,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartTurnos"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "440px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -685,7 +797,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartLapsos"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "500px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -695,7 +807,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartGeneros"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "440px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -705,14 +817,14 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartMotivos"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "500px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[95%] p-4">
                 <h1 className="text-center text-xl mb-4 font-medium text-slate-700">
                 <span className="font-semibold">Histórico:</span> Fechas de Egreso
                 </h1>
-               <div id="chartEgreso" style={{ width: "100%", height: "500px" }}></div>
+               <div id="chartEgreso" style={{ width: "100%", height: "550px" }}></div>
               </div>
 
               <h1 className="text-3xl mb-2  text-slate-700 font-bold w-[100%] flex justify-center">
@@ -725,7 +837,7 @@ export default function Home() {
                 </h1>
                 <div
                   id="chartDiplomadoExt"
-                  style={{ width: "100%", height: "400px" }}
+                  style={{ width: "100%", height: "450px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -735,7 +847,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartGenerosExt"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "440px" }}
                 ></div>
               </div>
               <div className="bg-white shadow-md rounded-md w-[47%] p-4">
@@ -745,7 +857,7 @@ export default function Home() {
                 <div
                   className="my-5"
                   id="chartMotivosExt"
-                  style={{ width: "100%", height: "355px" }}
+                  style={{ width: "100%", height: "500px" }}
                 ></div>
               </div>
 

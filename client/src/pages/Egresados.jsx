@@ -3,13 +3,13 @@ import { Container, Content, Header, Breadcrumb } from "rsuite";
 import NavHeader from "../components/NavHeader";
 import Footer from "../components/Footer";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
+import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
 
 export default function Egresados() {
   const [egresadosData, setEgresadosData] = useState([]);
-  const [totalEgresados, setTotalEgresados] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/egresados")
@@ -52,17 +52,6 @@ export default function Egresados() {
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/egresados?count=true")
-      .then((res) => res.json())
-      .then((data) => {
-        setTotalEgresados(data.total);
-      })
-      .catch((err) => {
-        console.log(err)
-      });
-  }, []);
-
   return (
     <Container className="bg-slate-200 flex flex-col min-h-screen">
       <Header>
@@ -82,9 +71,11 @@ export default function Egresados() {
                 Estudiantes Egresados
               </h1>
               <h3 className="text-lg mt-2 text-slate-700">
-                {totalEgresados} en total
+                {egresadosData.length} en total
               </h3>
+              <h3>Ultima carga: {LoadFunctions.currentDate}</h3>
             </div>
+            <LoadFunctions api="egresados" />
           </div>
           <div className="mt-10">
             <table
