@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 const { connection, connectToDatabase } = require('../../config/dbconfig');
 const verifyToken = require('../middlewares/VerifyToken.jsx');
 const fastcsv = require('fast-csv');
+const iconv = require('iconv-lite');
 const fs = require('fs');
 
 connectToDatabase()
@@ -87,10 +88,12 @@ router.post('/upload/egresados', (req, res) => {
         }
 
         const csvData = [];
-        fs.createReadStream(filePath, {encoding: 'utf8' })
+        fs.createReadStream(filePath)
+            .pipe(iconv.decodeStream('latin1'))
+            .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
-                csvData.push(row);
+                csvData.push(row);  
             })
             .on('end', () => {
                 const deleteQuery = 'DELETE FROM egresados';
@@ -145,7 +148,9 @@ router.post('/upload/extension', (req, res) => {
         }
 
         const csvData = [];
-        fs.createReadStream(filePath, {encoding: 'utf8' })
+        fs.createReadStream(filePath)
+            .pipe(iconv.decodeStream('latin1'))
+            .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
                 csvData.push(row);
@@ -215,7 +220,9 @@ router.post('/upload/:tableName', (req, res) => {
 
         const csvData = [];
         
-        fs.createReadStream(filePath, { encoding: 'utf8' })
+        fs.createReadStream(filePath)
+            .pipe(iconv.decodeStream('latin1'))
+            .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
                 csvData.push(row);
