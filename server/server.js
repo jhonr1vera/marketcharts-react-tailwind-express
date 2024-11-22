@@ -2,11 +2,14 @@ const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
 const app = express();
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 const corsOptions = {
     origin: ["http://localhost:5173"],
     credentials: true
 };
+
+app.use(fileUpload())
 
 app.use(session({
     secret: 'tu_secreto_para_la_sesion',

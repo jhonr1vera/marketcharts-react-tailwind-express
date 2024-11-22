@@ -6,10 +6,10 @@ import Footer from "../components/Footer";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
+import LoadFunctions from "../components/LoadCSV";
 
 export default function NoInscritos() {
   const [noInscritosData, setNoInscritosData] = useState([]);
-  const [totalNoInscritos, setTotalNoInscritos] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/noinscritos")
@@ -51,19 +51,13 @@ export default function NoInscritos() {
       })
       .catch((err) => {
         console.log(err);
-        errorRequest();
+       errorRequest();
       });
   }, []);
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/noinscritos?count=true")
-      .then((res) => res.json())
-      .then((data) => setTotalNoInscritos(data.total))
-      .catch((err) => console.log(err));
-  }, []);
 
   return (
-    <Container className="bg-slate-200 flex flex-col">
+    <Container className="bg-slate-200 flex flex-col min-h-screen">
       <Header>
         <NavHeader />
       </Header>
@@ -74,16 +68,16 @@ export default function NoInscritos() {
             <Breadcrumb.Item href="/">Dashboard</Breadcrumb.Item>
             <Breadcrumb.Item href="/noinscritos">No Inscritos</Breadcrumb.Item>
           </Breadcrumb>
-
           <div className="justify-between flex mx-[1.3rem]">
             <div className="grid">
               <h1 className="text-2xl tracking-wide text-slate-700 mt-5">
                 Estudiantes No Inscritos
               </h1>
               <h3 className="text-lg mt-2 text-slate-700">
-                {totalNoInscritos} en total
+              {noInscritosData.length} en total
               </h3>
             </div>
+            <LoadFunctions api="no_inscritos"/>
           </div>
 
           <div className="">
@@ -191,7 +185,8 @@ export default function NoInscritos() {
           </div>
         </div>
       </Content>
-      <Footer />
+      <Footer />    
     </Container>
+    
   );
 }

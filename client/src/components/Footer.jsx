@@ -1,12 +1,15 @@
 import React from 'react'
 
+
 export default function Footer() {
   return (
-    <div className='flex justify-between px-60 py-12 bg-slate-100 bottom-0 dark:bg-Very-Dark-Blue-Top 
+    <div className='relative flex justify-between px-60 py-12 bg-slate-100 bottom-0 dark:bg-Very-Dark-Blue-Top 
     tablet:px-7
     tablet:py-12
-    mobile:px-2  '>
-        <div>
+    mobile:px-2
+    mobile:py-12
+    '>
+        <div className=''>
             <h1 className='text-xl font-bold mb-4'>MarketCharts</h1>
             <p>Todos los derechos reservados a:</p>
             <p>MarketCharts Inc.</p>
