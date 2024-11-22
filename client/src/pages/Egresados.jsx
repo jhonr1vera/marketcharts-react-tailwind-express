@@ -73,7 +73,6 @@ export default function Egresados() {
               <h3 className="text-lg mt-2 text-slate-700">
                 {egresadosData.length} en total
               </h3>
-              <h3>Ultima carga: {LoadFunctions.currentDate}</h3>
             </div>
             <LoadFunctions api="egresados" />
           </div>

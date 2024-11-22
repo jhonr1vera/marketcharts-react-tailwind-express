@@ -3,9 +3,6 @@ import { Sidenav, Nav, Navbar, Avatar, Header } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/legacy/Dashboard';
 import ExitIcon from '@rsuite/icons/Exit';
 import TableIcon from '@rsuite/icons/Table';
-import Sun from '../assets/sun.svg';
-import Moon from '../assets/moon.svg';
-import NavItem from 'rsuite/esm/Nav/NavItem';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/Logo_ISUM.png'
 
@@ -46,7 +43,7 @@ function NavHeader({aditionalClass}) {
   return (
     <div className={aditionalClass} >
 
-        <Navbar className='dark:bg-Very-Dark-Blue-Top w-screen'>
+        <Navbar className='dark:bg-Very-Dark-Blue-Top w-screen px-2'>
                 <Navbar.Brand href="/" className='  text-2xl flex items-center tracking-wide dark:text-slate-400 mobile:ml-2 mobile:text-xl'>
                     MarketCharts<span className='translate-y-[3px] text-sm font-bold'>&nbsp;x&nbsp;</span>  <img className="h-8" src={logo} alt="Logo ISUM" />
                 </Navbar.Brand>
