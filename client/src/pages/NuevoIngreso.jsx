@@ -22,6 +22,7 @@ export default function NuevoIngreso() {
         if (data.length > 0 && !$.fn.DataTable.isDataTable("#ningresoTable")) {
           $(document).ready(function () {
             $("#ningresoTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",

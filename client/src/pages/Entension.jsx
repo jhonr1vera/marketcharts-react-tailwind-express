@@ -23,6 +23,7 @@ export default function Entension() {
         if (data.length > 0 && !$.fn.DataTable.isDataTable("#extensionTable")) {
           $(document).ready(function () {
             $("#extensionTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",

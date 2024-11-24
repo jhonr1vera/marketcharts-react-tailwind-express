@@ -22,6 +22,7 @@ export default function Egresados() {
         if (data.length > 0 && !$.fn.DataTable.isDataTable("#egresadosTable")) {
           $(document).ready(function () {
             $("#egresadosTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",

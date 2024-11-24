@@ -25,6 +25,7 @@ export default function NoInscritos() {
         ) {
           $(document).ready(function () {
             $("#noInscritosTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",

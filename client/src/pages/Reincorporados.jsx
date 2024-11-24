@@ -25,6 +25,7 @@ export default function Reincorporados() {
         ) {
           $(document).ready(function () {
             $("#reincorporadosTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",
