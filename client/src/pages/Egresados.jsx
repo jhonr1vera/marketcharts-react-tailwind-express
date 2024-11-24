@@ -23,6 +23,7 @@ export default function Egresados() {
           $(document).ready(function () {
             $("#egresadosTable").DataTable({
               retrieve: true,
+              responsive: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",
@@ -54,7 +55,7 @@ export default function Egresados() {
   }, []);
 
   return (
-    <Container className="bg-slate-200 flex flex-col min-h-screen">
+    <Container className="bg-slate-200 flex flex-col min-h-screen min-w-max">
       <Header>
         <NavHeader aditionalClass={""} />
       </Header>
@@ -74,6 +75,9 @@ export default function Egresados() {
               <h3 className="text-lg mt-2 text-slate-700">
                 {egresadosData.length} en total
               </h3>
+              <h2>Última carga: {new Date(egresadosData[0]?.fecha_carga).toLocaleDateString(
+                          "es-ES"
+                        )}</h2>
             </div>
             <LoadFunctions api="egresados" />
           </div>
@@ -100,7 +104,7 @@ export default function Egresados() {
                     Sexo
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Nacionalidad
+                    Doc
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Carrera

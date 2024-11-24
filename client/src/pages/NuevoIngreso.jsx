@@ -54,7 +54,7 @@ export default function NuevoIngreso() {
   }, []);
 
   return (
-    <Container className=" bg-slate-200 flex flex-col min-h-screen">
+    <Container className=" bg-slate-200 flex flex-col min-h-screen min-w-max">
       <Header>
         <NavHeader />
       </Header>
@@ -76,6 +76,9 @@ export default function NuevoIngreso() {
               <h3 className="text-lg mt-2 text-slate-700">
                 {nuevoingreso.length} en total
               </h3>
+              <h2>Última carga: {new Date(nuevoingreso[0]?.fecha_carga).toLocaleDateString(
+                          "es-ES"
+                        )}</h2>
             </div>
             <LoadFunctions api="nuevo_ingreso" />
           </div>
