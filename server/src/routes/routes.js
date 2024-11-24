@@ -386,7 +386,7 @@ router.get('/egresados',  (req, res) => {
 // General EndPoints
 
 router.get('/count_carreras', (req, res) => {
-    const query = 'SELECT count(*) AS count, carrera FROM instituto_tesis.regulares GROUP BY carrera';
+    const query = 'SELECT carrera,count(*) AS count FROM (SELECT carrera FROM instituto_tesis.regulares UNION ALL SELECT carrera FROM instituto_tesis.nuevo_ingreso UNION ALL SELECT carrera FROM instituto_tesis.reincorporados) as combined GROUP BY carrera';
 
     connection.query(query, (err, results) => {
         if (err) {
@@ -411,8 +411,8 @@ router.get('/count_lapsos', (req, res) => {
     });
 });
 
-router.get('/count_turnos', (req, res) => { //Hacer un left Join con los nuevo ingreso
-    const query = 'SELECT count(*) AS count, turno FROM instituto_tesis.regulares GROUP BY turno';
+router.get('/count_turnos', (req, res) => {
+    const query = 'SELECT turno, COUNT(*) AS count FROM (SELECT turno FROM instituto_tesis.regulares UNION ALL SELECT turno FROM instituto_tesis.nuevo_ingreso UNION ALL SELECT turno FROM instituto_tesis.reincorporados) AS combined GROUP BY turno';
 
     connection.query(query, (err, results) => {
         if (err) {
@@ -425,7 +425,7 @@ router.get('/count_turnos', (req, res) => { //Hacer un left Join con los nuevo i
 });
 
 router.get('/count_generos', (req, res) => {
-    const query = 'SELECT count(*) AS count, sexo FROM instituto_tesis.regulares GROUP BY sexo';
+    const query = 'SELECT sexo, COUNT(*) AS count FROM (SELECT sexo FROM instituto_tesis.regulares UNION ALL SELECT sexo FROM instituto_tesis.nuevo_ingreso UNION ALL SELECT sexo FROM instituto_tesis.reincorporados) AS combined GROUP BY sexo';
 
     connection.query(query, (err, results) => {
         if (err) {
@@ -463,6 +463,8 @@ router.get('/fecha_egreso', (req, res) => {
     })
 })
 
+
+// Extension EndPoints
 router.get('/diplomado_ext', (req, res) => {
     const query = "SELECT count(*) AS count, diplomado FROM instituto_tesis.extension GROUP BY diplomado"
 
