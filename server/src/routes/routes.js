@@ -7,6 +7,7 @@ const verifyToken = require('../middlewares/VerifyToken.jsx');
 const fastcsv = require('fast-csv');
 const iconv = require('iconv-lite');
 const fs = require('fs');
+const moment = require('moment');
 
 connectToDatabase()
 
@@ -93,7 +94,13 @@ router.post('/upload/egresados', (req, res) => {
             .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
-                csvData.push(row);  
+                if (row[3]){
+                    row[3] = moment(row[3], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                }
+                if (row[13]){
+                    row[13] = moment(row[13], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                }
+                csvData.push(row);
             })
             .on('end', () => {
                 const deleteQuery = 'DELETE FROM egresados';
@@ -153,6 +160,12 @@ router.post('/upload/extension', (req, res) => {
             .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
+                if (row[3]){
+                    row[3] = moment(row[3], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                }
+                if (row[11]){
+                    row[11] = moment(row[11], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                }
                 csvData.push(row);
             })
             .on('end', () => {
@@ -225,6 +238,9 @@ router.post('/upload/:tableName', (req, res) => {
             .pipe(iconv.encodeStream('utf8'))
             .pipe(fastcsv.parse({ headers: false, skipRows: 1, delimiter: ';' }))
             .on('data', (row) => {
+                if (row[3]){
+                    row[3] = moment(row[3], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                }
                 csvData.push(row);
             })
             .on('end', () => {
