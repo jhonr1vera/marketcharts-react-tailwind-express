@@ -5,8 +5,8 @@ import Footer from "../components/Footer";
 import { noInfo, errorRequest } from "../components/SwalFunctions";
 import LoadFunctions from "../components/LoadCSV";
 import "datatables.net-dt/css/dataTables.dataTables.css";
-import $ from "jquery";
 import "datatables.net-dt";
+import $ from "jquery";
 
 export default function Regulares() {
   const [regularesData, setRegularesData] = useState([]);
@@ -21,9 +21,10 @@ export default function Regulares() {
           setTimeout(noInfo, 800);
         }
 
-        if (data.length > 0 && !$.fn.DataTable.isDataTable("#myTable")) {
+        if (data.length > 0 && !$.fn.DataTable.isDataTable("TableRegulares")) {
           $(document).ready(function () {
-            $("#myTable").DataTable({
+            $("#TableRegulares").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",
@@ -55,7 +56,7 @@ export default function Regulares() {
   }, []);
 
   return (
-    <Container className="bg-slate-200 flex flex-col min-h-screen">
+    <Container className="bg-slate-200 flex flex-col min-h-screen min-w-max">
       <Header>
         <NavHeader />
       </Header>
@@ -74,6 +75,9 @@ export default function Regulares() {
               <h3 className="text-lg mt-2 text-slate-700">
                 {regularesData.length} en total
               </h3>
+              <h2>Última carga: {new Date(regularesData[0]?.fecha_carga).toLocaleDateString(
+                          "es-ES"
+                        )}</h2>
             </div>
             <LoadFunctions api="regulares" />
           </div>
@@ -81,7 +85,7 @@ export default function Regulares() {
           <div className="">
             <table
               className="min-w-full divide-y divide-gray-200 mt-10"
-              id="myTable"
+              id="TableRegulares"
             >
               <thead className="bg-gray-50 dark:bg-slate-400 dark:text-black">
                 <tr>

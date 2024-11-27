@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Container, Content, Breadcrumb, Header } from "rsuite";
-import NavHeader from "../components/NavHeader";
-import Footer from "../components/Footer";
-import { noInfo, errorRequest } from "../components/SwalFunctions";
-import LoadFunctions from "../components/LoadCSV";
+import { Container, Header, Content, Breadcrumb } from "rsuite";
+import NavHeader from "../../components/NavHeader";
+import Footer from "../../components/Footer";
+import { noInfo, errorRequest } from "../../components/SwalFunctions";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
@@ -79,7 +78,6 @@ export default function Entension() {
                           "es-ES"
                         )}</h2>
               </div>
-              <LoadFunctions api="extension" />
             </div>
 
             <div className="">

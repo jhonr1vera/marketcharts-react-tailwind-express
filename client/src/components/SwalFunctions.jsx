@@ -24,7 +24,7 @@ export const successLoad = () => {
     icon: "success",
     title: "Tabla cargada corectamente",
     showConfirmButton: false,
-    timer: 2800,
+    timer: 1800,
     width: '300px', 
     padding: '10px'
   });
@@ -39,5 +39,13 @@ export const failedLoad = () => {
     timer: 2800,
     width: '300px', 
     padding: '10px'
+  });
+}
+
+export const errorGenerate = () => {
+  Swal.fire({
+    icon: "error",
+    title: "Error",
+    text: "Hubo un error al generar el informe",
   });
 }

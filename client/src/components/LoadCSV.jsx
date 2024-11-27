@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { successLoad, failedLoad } from "./SwalFunctions";
+import uploadIcon from "../assets/uploadIcon.svg";
 
 export default function LoadFunctions({ api, onDateChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -63,8 +64,9 @@ export default function LoadFunctions({ api, onDateChange }) {
     <div className="flex items-center justify-center">
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white px-4 py-2 rounded text-lg"
+        className="bg-blue-500 text-white px-4 py-2 rounded text-lg flex gap-1 items-center"
       >
+         <img src={uploadIcon} alt="uploadIcon" className="" />
         Cargar tabla
       </button>
 

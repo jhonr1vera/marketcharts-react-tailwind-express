@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Container, Content, Header, Breadcrumb } from "rsuite";
-import NavHeader from "../components/NavHeader";
-import Footer from "../components/Footer";
-import { noInfo, errorRequest } from "../components/SwalFunctions";
-import LoadFunctions from "../components/LoadCSV";
+import React, { useState, useEffect } from "react";
+import { Container, Header, Content, Breadcrumb } from "rsuite";
+import NavHeader from "../../components/NavHeader";
+import Footer from "../../components/Footer";
+import { noInfo, errorRequest } from "../../components/SwalFunctions";
 import "datatables.net-dt/css/dataTables.dataTables.css";
 import $ from "jquery";
 import "datatables.net-dt";
+
 
 export default function Egresados() {
   const [egresadosData, setEgresadosData] = useState([]);
@@ -79,7 +79,6 @@ export default function Egresados() {
                           "es-ES"
                         )}</h2>
             </div>
-            <LoadFunctions api="egresados" />
           </div>
           <div className="mt-10">
             <table

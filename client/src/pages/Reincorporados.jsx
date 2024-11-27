@@ -25,6 +25,7 @@ export default function Reincorporados() {
         ) {
           $(document).ready(function () {
             $("#reincorporadosTable").DataTable({
+              retrieve: true,
               language: {
                 decimal: "",
                 emptyTable: "No hay información",
@@ -56,7 +57,7 @@ export default function Reincorporados() {
   }, []);
 
   return (
-    <Container className="bg-slate-200 flex flex-col min-h-screen">
+    <Container className="bg-slate-200 flex flex-col min-h-screen min-w-max">
       <Header>
         <NavHeader />
       </Header>
@@ -77,6 +78,9 @@ export default function Reincorporados() {
               <h3 className="text-lg mt-2 text-slate-700">
                 {reincorporadosData.length} en total
               </h3>
+              <h2>Última carga: {new Date(reincorporadosData[0]?.fecha_carga).toLocaleDateString(
+                          "es-ES"
+                        )}</h2>
             </div>
             <LoadFunctions api="reincorporados" />
           </div>

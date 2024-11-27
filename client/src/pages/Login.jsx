@@ -6,14 +6,6 @@ import Swal from 'sweetalert2'
 
 export default function Login() {
 
-    const handleError = () => {
-        Swal.fire({
-            icon: "error",
-            title: "Error al iniciar",
-            text: 'Usuario o contraseña incorrectos'
-          });
-    }
-
     const Success = () => {
         const Toast = Swal.mixin({
             toast: true,
@@ -51,15 +43,15 @@ export default function Login() {
             }), credentials: 'include',
         })
         .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else if (response.status === 404 || response.status === 401) {
-                handleError();
-                return Promise.reject('Credenciales incorrectas');
-            } else {
-                errorRequest();
-                return Promise.reject('Error en el servidor');
+            if (!response.ok) {
+                if (response.status === 400 || response.status === 401 || response.status === 404) {
+                    return response.json().then((data) => {
+                        throw new Error(data.message || 'Datos inválidos, verifica tu usuario y contraseña.');
+                    });
+                }
+                throw new Error('Error del servidor. Intenta nuevamente.');
             }
+            return response.json();
         })
         .then((data) => {
             localStorage.setItem('token', data.token);
@@ -67,7 +59,12 @@ export default function Login() {
             Success();
         })
         .catch((err) => {
-            console.log(err);
+            console.error(err);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: err.message,
+            });
         });
     };
     const toggleVisibility = () => {
