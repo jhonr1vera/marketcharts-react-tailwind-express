@@ -10,6 +10,7 @@ export default function InfoCard({text, style}) {
   return (
     <div className="relative flex">
       <button
+        id='infoCard'
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         className={`p-1 bg-slate-400 rounded-lg hover:bg-slate-500 ${style}`}
