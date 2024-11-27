@@ -8,7 +8,6 @@ const fastcsv = require('fast-csv');
 const iconv = require('iconv-lite');
 const fs = require('fs');
 const moment = require('moment');
-const puppeteer = require("puppeteer");
 const axios = require('axios');
 require('dotenv').config();
 
