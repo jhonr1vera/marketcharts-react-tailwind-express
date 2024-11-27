@@ -12,10 +12,14 @@ const corsOptions = {
 app.use(fileUpload())
 
 app.use(session({
-    secret: 'tu_secreto_para_la_sesion',
+    secret: 'session_secret',
     resave: false,
     saveUninitialized: false,
-    cookie: {secure: false}
+    cookie: {
+        httpOnly: true,
+        secure: false, 
+        maxAge: 3600000,
+    },
 }))
 
 app.use(express.json());
