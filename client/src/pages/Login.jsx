@@ -44,7 +44,7 @@ export default function Login() {
         })
         .then((response) => {
             if (!response.ok) {
-                if (response.status === 400 || response.status === 401) {
+                if (response.status === 400 || response.status === 401 || response.status === 404) {
                     return response.json().then((data) => {
                         throw new Error(data.message || 'Datos inválidos, verifica tu usuario y contraseña.');
                     });
