@@ -130,6 +130,9 @@ export default function Reincorporados() {
                     Motivo de Ingreso
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Motivo Elección
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Dirección
                   </th>
                 </tr>
@@ -177,6 +180,9 @@ export default function Reincorporados() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {reincorporados.motivo_ingreso}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {reincorporados.motivo_eleccion}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {reincorporados.direccion}

@@ -131,6 +131,9 @@ export default function NoInscritos() {
                     Motivo de Ingreso
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Motivo Elección
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Dirección
                   </th>
                 </tr>
@@ -142,10 +145,10 @@ export default function NoInscritos() {
                       {no_inscritos.cedula}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {no_inscritos.nombre}
+                      {no_inscritos.nombres}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {no_inscritos.apellido}
+                      {no_inscritos.apellidos}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {new Date(no_inscritos.fecha_nacimiento).toLocaleDateString(
@@ -178,6 +181,9 @@ export default function NoInscritos() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {no_inscritos.motivo_ingreso}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {no_inscritos.motivo_eleccion}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {no_inscritos.direccion}

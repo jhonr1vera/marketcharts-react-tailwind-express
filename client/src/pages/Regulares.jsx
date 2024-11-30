@@ -129,6 +129,9 @@ export default function Regulares() {
                     Motivo de Ingreso
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Motivo Eleccion
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Dirección
                   </th>
                 </tr>
@@ -140,10 +143,10 @@ export default function Regulares() {
                       {regulares.cedula}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {regulares.nombre}
+                      {regulares.nombres}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {regulares.apellido}
+                      {regulares.apellidos}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {new Date(regulares.fecha_nacimiento).toLocaleDateString(
@@ -176,6 +179,9 @@ export default function Regulares() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {regulares.motivo_ingreso}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {regulares.motivo_eleccion}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {regulares.direccion}

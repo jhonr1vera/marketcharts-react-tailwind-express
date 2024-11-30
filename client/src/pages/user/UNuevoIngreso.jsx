@@ -124,9 +124,11 @@ export default function UNuevoIngreso() {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Teléfono
                   </th>
-                  
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Motivo de Ingreso
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Motivo Elección
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Dirección
@@ -140,10 +142,10 @@ export default function UNuevoIngreso() {
                       {nuevo_ingreso.cedula}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {nuevo_ingreso.nombre}
+                      {nuevo_ingreso.nombres}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {nuevo_ingreso.apellido}
+                      {nuevo_ingreso.apellidos}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {new Date(nuevo_ingreso.fecha_nacimiento).toLocaleDateString(
@@ -176,6 +178,9 @@ export default function UNuevoIngreso() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {nuevo_ingreso.motivo_ingreso}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {nuevo_ingreso.motivo_eleccion}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       {nuevo_ingreso.direccion}

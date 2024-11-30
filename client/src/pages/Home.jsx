@@ -34,9 +34,6 @@ export default function Home() {
     const button = document.getElementById("reportImage");
     const handleClick = () => {
       const element = document.getElementById("printReport");
-      const infoCard = document.getElementById("infoCard");
-
-      infoCard.style.display = "none";
   
       html2canvas(element, { 
         scale: 2, 
@@ -48,8 +45,6 @@ export default function Home() {
         link.href = imgData;
         link.download = `informe-${fecha}.png`;
         link.click();
-  
-        infoCard.style.display = "block";
       });
     };
   
@@ -114,28 +109,28 @@ export default function Home() {
 
       // Career
       const informaticaData = carrerasCount.find(
-        (item) => item.carrera === "Informática"
+        (item) => item.carrera === "INF"
       ) ?? { count: 0 };
 
       const gestionFiscalData = carrerasCount.find(
-        (item) => item.carrera === "Gestión Fiscal y Tributaria"
+        (item) => item.carrera === "GFT"
       ) ?? { count: 0 };
 
       const administracionData = carrerasCount.find(
-        (item) => item.carrera === "Administración"
+        (item) => item.carrera === "ADM"
       ) ?? { count: 0 };
 
       const mercadeoData = carrerasCount.find(
-        (item) => item.carrera === "Mercadeo"
+        (item) => item.carrera === "MER"
       ) ?? { count: 0 };
 
       // DayShift
       const diurnoData = turnosCount.find(
-        (item) => item.turno === "Diurno"
+        (item) => item.turno === "D"
       ) ?? { count: 0 };
 
       const nocturnoData = turnosCount.find(
-        (item) => item.turno === "Nocturno"
+        (item) => item.turno === "N"
       ) ?? { count: 0 };
 
       // Gender
@@ -186,7 +181,11 @@ export default function Home() {
       ) ?? { count: 0 };
 
       const pagWebMotive = motivos.find(
-        (item) => item.motivo_ingreso === "Pagina Web"
+        (item) => item.motivo_ingreso === "Página Web"
+      ) ?? { count: 0 };
+
+      const conocidosMotive = motivos.find(
+        (item) => item.motivo_ingreso === "Conocido"
       ) ?? { count: 0 };
 
       // Añadir contenido al PDF
@@ -483,7 +482,7 @@ export default function Home() {
         20,
         200
       );
-      // doc.text(`${((otrosMotive.count / totalNuevoIngreso) * 100).toFixed(2)}% son por otros motivos (${otrosMotive.count} en enteros)`, 20, 210);
+      doc.text(`${((conocidosMotive.count / totalNuevoIngreso) * 100).toFixed(2)}% son por Conocidos (${conocidosMotive.count} en enteros)`, 20, 210);
 
       doc.save(`Informe_general-${fecha}.pdf`);
     } catch (error) {
@@ -605,6 +604,7 @@ export default function Home() {
         am5.Legend.new(root, {
           centerX: am5.percent(50),
           x: am5.percent(50),
+          clickTarget: "none",
           layout: am5.GridLayout.new(root, {
             maxColumns: 2,
             spacing: 10,
@@ -643,8 +643,6 @@ export default function Home() {
     let root = am5.Root.new("chartLapsos");
     root.setThemes([am5themes_Animated.new(root)]);
 
-    root.setThemes([am5themes_Animated.new(root)]);
-
     let chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panY: false,
@@ -677,7 +675,10 @@ export default function Home() {
     );
     series1.data.setAll(lapsosCount);
 
-    let legend = chart.children.push(am5.Legend.new(root, {}));
+    let legend = chart.children.push(am5.Legend.new(root, {
+      clickTarget: "none",
+      centerX: am5.percent(50), x: am5.percent(50)
+    }));
     legend.data.setAll(chart.series.values);
 
     chart.set("cursor", am5xy.XYCursor.new(root, {}));
@@ -717,6 +718,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -773,6 +775,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -831,6 +834,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -886,6 +890,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -918,17 +923,50 @@ export default function Home() {
     fetch("http://localhost:5000/api/fecha_egreso")
       .then((res) => res.json())
       .then((data) => {
+        const processedData = dataEmpty(data);
         setFechas(data);
+        console.log(processedData);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  useLayoutEffect(() => {
-    if (fechas.length === 0) return;
+  const dataEmpty = (data) => {
+    if (!data || data.length === 0) return [];
+  
+    const sortedData = data.sort((a, b) => a.date - b.date);
+    const startDate = sortedData[0].date;
+    const endDate = sortedData[sortedData.length - 1].date;
+    const filledData = [];
+  
+    let currentDate = startDate;
+    let index = 0;
+  
+    while (currentDate <= endDate) {
+      const existingData = sortedData[index];
+  
+      if (existingData && existingData.date === currentDate) {
 
+        filledData.push(existingData);
+        index++;
+      } else {
+        filledData.push({ date: currentDate, value: 0 });
+      }
+  
+
+      const current = new Date(currentDate);
+      current.setMonth(current.getMonth() + 1);
+      currentDate = current.getTime();
+    }
+  
+    return filledData;
+  };
+  
+  useLayoutEffect(() => {
+    if (!fechas || fechas.length === 0) return;
+  
     let root = am5.Root.new("chartEgreso");
     root.setThemes([am5themes_Animated.new(root)]);
-
+  
     let chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
@@ -938,21 +976,21 @@ export default function Home() {
         pinchZoomX: true,
       })
     );
-
+  
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
-        baseInterval: { timeUnit: "month", count: 1 },
+        baseInterval: { timeUnit: "year", count: 1 },
         renderer: am5xy.AxisRendererX.new(root, {}),
         tooltip: am5.Tooltip.new(root, {}),
       })
     );
-
+  
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {}),
       })
     );
-
+  
     let series = chart.series.push(
       am5xy.LineSeries.new(root, {
         name: "Egresos",
@@ -965,29 +1003,30 @@ export default function Home() {
         }),
       })
     );
-
+  
     series.fills.template.setAll({
       visible: true,
       fillOpacity: 0.3,
     });
-
+  
     chart.set(
       "scrollbarX",
       am5.Scrollbar.new(root, {
         orientation: "horizontal",
       })
     );
-
+  
     series.data.setAll(fechas);
     xAxis.data.setAll(fechas);
-
+  
     series.appear(1000);
     chart.appear(1000, 100);
-
+  
     return () => {
       root.dispose();
     };
   }, [fechas]);
+  
 
   // Extension Diplomados
 
@@ -1026,6 +1065,7 @@ export default function Home() {
 
       let legend = chart.children.push(
         am5.Legend.new(root, {
+          clickTarget: "none",
           centerX: am5.percent(50),
           x: am5.percent(50),
           layout: am5.GridLayout.new(root, {
@@ -1083,6 +1123,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -1139,6 +1180,7 @@ export default function Home() {
 
     let legend = chart.children.push(
       am5.Legend.new(root, {
+        clickTarget: "none",
         centerX: am5.percent(50),
         x: am5.percent(50),
         layout: am5.GridLayout.new(root, {
@@ -1169,12 +1211,12 @@ export default function Home() {
     <div className="">
       <Container>
         <Header>
-          <NavHeader aditionalClass={"fixed"}></NavHeader>
+          <NavHeader aditionalClass={""}></NavHeader>
         </Header>
       </Container>
       <Container>
         <Content className="bg-slate-200 dark:bg-Dark-Desaturated-Blue">
-          <div className="mt-20 px-6 inline-flex items-center justify-between w-[100%]">
+          <div className="mt-5 px-6 inline-flex items-center justify-between w-[100%]">
             <h1 className="text-xl tracking-wide flex text-slate-700">
               Dashboard
             </h1>
