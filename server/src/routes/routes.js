@@ -107,8 +107,8 @@ router.post('/upload/egresados', (req, res) => {
                 if (row[3]){
                     row[3] = moment(row[3], 'DD/MM/YYYY').format('YYYY-MM-DD');
                 }
-                if (row[13]){
-                    row[13] = moment(row[13], 'DD/MM/YYYY').format('YYYY-MM-DD');
+                if (row[14]){
+                    row[14] = moment(row[14], 'DD/MM/YYYY').format('YYYY-MM-DD');
                 }
                 csvData.push(row);
             })
@@ -122,7 +122,7 @@ router.post('/upload/egresados', (req, res) => {
 
                     console.log('Data was eliminated');
 
-                    const insertQuery = 'INSERT INTO egresados (cedula, nombre, apellido, fecha_nacimiento, sexo, tipo_doc, carrera, mencion, turno, correo, telefono, motivo_ingreso, direccion, fecha_egreso) VALUES ?';
+                    const insertQuery = 'INSERT INTO egresados (cedula, nombre, apellido, fecha_nacimiento, sexo, tipo_doc, carrera, mencion, turno, correo, telefono, motivo_ingreso, motivo_eleccion, direccion, fecha_egreso) VALUES ?';
                     const values = csvData.map(row => [
                         row[0],  // cedula
                         row[1],  // nombre
@@ -136,8 +136,9 @@ router.post('/upload/egresados', (req, res) => {
                         row[9],  // correo
                         row[10], // telefono
                         row[11], // motivo_ingreso
-                        row[12], // direccion
-                        row[13], // fecha_egreso
+                        row[12], // motivo_eleccion
+                        row[13], // direccion
+                        row[14], // fecha_egreso
                     ]);
                     connection.query(insertQuery, [values], (insertError, insertResponse) => {
                         if (insertError) {
@@ -264,7 +265,7 @@ router.post('/upload/:tableName', (req, res) => {
 
                     console.log(`Data eliminated in ${tableName} successfully.`);
 
-                    const insertQuery = `INSERT INTO ${tableName} (cedula, nombre, apellido, fecha_nacimiento, sexo, tipo_doc, carrera, mencion, lapso, turno, correo, telefono, motivo_ingreso, direccion) VALUES ?`;
+                    const insertQuery = `INSERT INTO ${tableName} (cedula, nombres, apellidos, fecha_nacimiento, sexo, tipo_doc, carrera, mencion, lapso, turno, correo, telefono, motivo_ingreso, motivo_eleccion, direccion) VALUES ?`;
                     const values = csvData.map(row => [
                         row[0],
                         row[1],
@@ -280,6 +281,7 @@ router.post('/upload/:tableName', (req, res) => {
                         row[11],
                         row[12],
                         row[13],
+                        row[14],
                     ]);
 
                     connection.query(insertQuery, [values], (insertError) => {
