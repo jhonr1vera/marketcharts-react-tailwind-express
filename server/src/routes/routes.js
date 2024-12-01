@@ -64,6 +64,67 @@ router.get('/user', (req, res) => {
     }
 });
 
+router.get('/user_data', (req, res) => {
+    query = 'SELECT * FROM usuarios';
+
+    connection.query(query, (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.json(results);
+        }
+    })
+})
+
+router.delete('/delete_user/:id_usuario', (req, res) => {
+    const userId = req.params.id_usuario;
+
+    const query = 'DELETE FROM usuarios WHERE id_usuario = ?';
+
+    connection.query(query, [userId], (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.send("User deleted successfully");
+        }
+    });
+});
+
+
+router.post('/insert_user', (req, res) => {
+    const { nombre_usuario, contrasenia, name, rol } = req.body;
+
+    query = 'INSERT INTO usuarios (nombre_usuario, contrasenia, name, rol) VALUES (?, ?, ?, ?)';
+
+    connection.query(query, [nombre_usuario, contrasenia, name, rol], (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {
+            res.send("User inserted successfully");
+        }
+    })
+})
+
+router.put('/update_user/:id_usuario', (req, res) => {
+    const userId = req.params.id_usuario
+
+    const { nombre_usuario, contrasenia, name, rol } = req.body;
+
+    query = 'UPDATE usuarios SET nombre_usuario = ?, contrasenia = ?, name = ?, rol = ? WHERE id_usuario = ?';
+
+    connection.query(query, [nombre_usuario, contrasenia, name, rol, userId], (err, results) => {
+        if (err) {
+            console.error("Error executing query:", err);
+            res.status(500).json({ error: "Internal Server Error" });
+        } else {    
+            res.send("User updated successfully");
+        }
+    })
+})
+
 router.get('/nuevoingreso',  (req, res) => {
     const countOnly = req.query.count === 'true'
 
