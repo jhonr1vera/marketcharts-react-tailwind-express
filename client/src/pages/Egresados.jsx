@@ -86,7 +86,7 @@ export default function Egresados() {
               className="min-w-full divide-y divide-gray-200 mt-10"
               id="egresadosTable"
             >
-              <thead className="bg-gray-50 dark:bg-slate-400">
+              <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Cédula
@@ -104,7 +104,7 @@ export default function Egresados() {
                     Sexo
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Doc
+                    Nacionalidad
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Carrera
