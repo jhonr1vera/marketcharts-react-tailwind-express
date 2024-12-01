@@ -160,6 +160,8 @@ router.post('/upload/egresados', (req, res) => {
         }
 
         const csvData = [];
+        const seenCedulas = new Set();
+
         fs.createReadStream(filePath)
             .pipe(iconv.decodeStream('latin1'))
             .pipe(iconv.encodeStream('utf8'))
@@ -171,7 +173,10 @@ router.post('/upload/egresados', (req, res) => {
                 if (row[14]){
                     row[14] = moment(row[14], 'DD/MM/YYYY').format('YYYY-MM-DD');
                 }
-                csvData.push(row);
+                if (!seenCedulas.has(row[0])) {
+                    seenCedulas.add(row[0]);
+                    csvData.push(row);
+                }
             })
             .on('end', () => {
                 const deleteQuery = 'DELETE FROM egresados';
@@ -227,6 +232,8 @@ router.post('/upload/extension', (req, res) => {
         }
 
         const csvData = [];
+        const seenCedulas = new Set();
+
         fs.createReadStream(filePath)
             .pipe(iconv.decodeStream('latin1'))
             .pipe(iconv.encodeStream('utf8'))
@@ -238,7 +245,10 @@ router.post('/upload/extension', (req, res) => {
                 if (row[11]){
                     row[11] = moment(row[11], 'DD/MM/YYYY').format('YYYY-MM-DD');
                 }
-                csvData.push(row);
+                if (!seenCedulas.has(row[0])) {
+                    seenCedulas.add(row[0]);
+                    csvData.push(row);
+                }
             })
             .on('end', () => {
                 const deleteQuery = 'DELETE FROM extension';
@@ -304,6 +314,7 @@ router.post('/upload/:tableName', (req, res) => {
         }
 
         const csvData = [];
+        const seenCedulas = new Set()
         
         fs.createReadStream(filePath)
             .pipe(iconv.decodeStream('latin1'))
@@ -313,7 +324,10 @@ router.post('/upload/:tableName', (req, res) => {
                 if (row[3]){
                     row[3] = moment(row[3], 'DD/MM/YYYY').format('YYYY-MM-DD');
                 }
-                csvData.push(row);
+                if (!seenCedulas.has(row[0])) {
+                    seenCedulas.add(row[0]);
+                    csvData.push(row);
+                }
             })
             .on('end', () => {
                 const deleteQuery = `DELETE FROM ${tableName}`;
