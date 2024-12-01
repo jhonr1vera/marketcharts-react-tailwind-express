@@ -5,6 +5,7 @@ import { PrivateRoute } from './components/PrivateRoute';
 // pages
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
 import NuevoIngreso from './pages/NuevoIngreso';
 import Reincorporados from './pages/Reincorporados';
 import Regulares from './pages/Regulares';
@@ -27,6 +28,7 @@ function App() {
         { path: '/egresados', component: Egresados, allowedRoles: ['admin'] },
         { path: '/noinscritos', component: NoInscritos, allowedRoles: ['admin'] },
         { path: '/extension', component: Extension, allowedRoles: ['admin'] },
+        { path: '/admin_options', component: Admin, allowedRoles: ['admin'] },
         { path: '/user_nuevoIngreso', component: UNuevoIngreso, allowedRoles: ['user'] },
         { path: '/user_reincorporados', component: UReincorporados, allowedRoles: ['user'] },
         { path: '/user_regulares', component: URegulares, allowedRoles: ['user'] },
