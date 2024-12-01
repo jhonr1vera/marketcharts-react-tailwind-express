@@ -4,7 +4,7 @@ const bgChillBreak =
   "bg-gradient-to-r from-orange-500 to-white";
 
 export default function SocialMediaCard({ bgcolor, title }) {
-  const [ytSubscribers, setYtSubscribers] = useState(0);
+  const [ytSubscribers, setYtSubscribers] = useState([]);
   const [cbSubscribers, setCbSubscribers] = useState([]);
 
   useEffect(() => {
