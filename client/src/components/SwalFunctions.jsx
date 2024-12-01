@@ -18,11 +18,11 @@ export const errorRequest = () => {
   });
 }
 
-export const successLoad = () => {
+export const successLoad = (message) => {
   Swal.fire({
     position: "top-end",
     icon: "success",
-    title: "Tabla cargada corectamente",
+    title: `${message}`,
     showConfirmButton: false,
     timer: 1800,
     width: '300px', 
@@ -30,11 +30,11 @@ export const successLoad = () => {
   });
 }
 
-export const failedLoad = () => {
+export const failedLoad = (message) => {
   Swal.fire({
     position: "top-end",
     icon: "error",
-    title: "Hubo un error al cargar la tabla",
+    title: `${message}`,
     showConfirmButton: false,
     timer: 2800,
     width: '300px', 
