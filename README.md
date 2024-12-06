@@ -9,6 +9,8 @@ According to the needs, this:
 - Allows to export the Dashboard information.
 - Allows to see information from db in tables.
 - Allows to filter information.
+- Allows to load informations to db (through Excel CSV files)
+- Allows to manage users.
 ## Installation
 
 Set Database (MySQL)
@@ -16,7 +18,7 @@ Set Database (MySQL)
 - Download instituto_tesis.sql
 - Execute it in your SQL Database
 
-Previous tested in XAMPP
+Previous tested in WAMPP
 
 
     
